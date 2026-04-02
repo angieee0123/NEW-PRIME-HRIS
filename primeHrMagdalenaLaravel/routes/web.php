@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return view('welcome');
@@ -21,7 +22,7 @@ Route::post('/login', function (\Illuminate\Http\Request $request) {
         'password' => ['required'],
     ]);
 
-    if (auth()->attempt($credentials, $request->boolean('remember'))) {
+    if (Auth::attempt($credentials, $request->boolean('remember'))) {
         $request->session()->regenerate();
         return redirect()->intended('/dashboard');
     }
@@ -58,7 +59,7 @@ Route::post('/signup', function (\Illuminate\Http\Request $request) {
 })->name('signup.post');
 
 Route::post('/logout', function (\Illuminate\Http\Request $request) {
-    auth()->logout();
+    Auth::logout();
     $request->session()->invalidate();
     $request->session()->regenerateToken();
     return redirect('/');

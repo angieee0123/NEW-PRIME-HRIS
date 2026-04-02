@@ -382,9 +382,9 @@
         <div class="chatbot-header">
             <div class="chatbot-header-left">
                 <div class="chatbot-avatar">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                    </svg>
+                    <img src="/municipal-of-pagsanjan-logo.jpg" alt="Pagsanjan Logo"
+                         onerror="this.style.display='none'"
+                         style="width:100%;height:100%;object-fit:cover;border-radius:50%">
                 </div>
                 <div>
                     <p class="chatbot-name">Pagsanjan LGU Assistant</p>
@@ -406,18 +406,30 @@
         </div>
 
         <div class="chatbot-quick-actions">
-            <button class="chatbot-quick-btn" onclick="quickAsk('What services do you offer?')">📋 Services</button>
-            <button class="chatbot-quick-btn" onclick="quickAsk('What are your office hours?')">🕐 Hours</button>
-            <button class="chatbot-quick-btn" onclick="quickAsk('How do I get a permit?')">📄 Permits</button>
-            <button class="chatbot-quick-btn" onclick="quickAsk('Contact information')">📞 Contact</button>
+            <button class="chatbot-quick-btn" onclick="quickAsk('What services do you offer?')">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
+                Services
+            </button>
+            <button class="chatbot-quick-btn" onclick="quickAsk('What are your office hours?')">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                Hours
+            </button>
+            <button class="chatbot-quick-btn" onclick="quickAsk('How do I get a permit?')">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                Permits
+            </button>
+            <button class="chatbot-quick-btn" onclick="quickAsk('Contact information?')">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                Contact
+            </button>
         </div>
 
         <div class="chatbot-messages" id="chatbot-messages">
             <div class="chat-msg bot">
                 <div class="chat-msg-avatar">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                    </svg>
+                    <img src="/municipal-of-pagsanjan-logo.jpg" alt="Pagsanjan Logo"
+                         onerror="this.style.display='none'"
+                         style="width:100%;height:100%;object-fit:cover;border-radius:50%">
                 </div>
                 <div class="chat-msg-bubble">Hello! I'm the Pagsanjan LGU Assistant. I can help you with information about municipal services, requirements, fees, and procedures. How can I assist you today?</div>
             </div>
@@ -459,7 +471,7 @@ function addMessage(text, isUser, followUps = [], fullResponse = null) {
     if (!isUser) {
         const avatar = document.createElement('div');
         avatar.className = 'chat-msg-avatar';
-        avatar.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
+        avatar.innerHTML = '<img src="/municipal-of-pagsanjan-logo.jpg" alt="Pagsanjan Logo" style="width:100%;height:100%;object-fit:cover;border-radius:50%">';
         wrapper.appendChild(avatar);
     }
 
@@ -482,16 +494,18 @@ function addMessage(text, isUser, followUps = [], fullResponse = null) {
         toggleWrap.className = 'chat-toggle-wrap';
         const toggleBtn = document.createElement('button');
         toggleBtn.className = 'chat-toggle-btn';
-        toggleBtn.textContent = '📄 See More';
+        toggleBtn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg> See More';
         toggleBtn.onclick = () => {
-            if (toggleBtn.textContent === '📄 See More') {
+            if (toggleBtn.dataset.open !== 'true') {
                 bubble.innerHTML = fullResponse.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
                 bubble.appendChild(ts);
-                toggleBtn.textContent = '📄 See Less';
+                toggleBtn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg> See Less';
+                toggleBtn.dataset.open = 'true';
             } else {
                 bubble.innerHTML = html;
                 bubble.appendChild(ts);
-                toggleBtn.textContent = '📄 See More';
+                toggleBtn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg> See More';
+                toggleBtn.dataset.open = 'false';
             }
         };
         toggleWrap.appendChild(toggleBtn);
@@ -504,7 +518,7 @@ function addMessage(text, isUser, followUps = [], fullResponse = null) {
         fuWrap.className = 'chat-followups';
         const label = document.createElement('p');
         label.className = 'chat-followup-label';
-        label.textContent = '💡 You might also want to ask:';
+        label.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px;vertical-align:middle"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>You might also want to ask:';
         fuWrap.appendChild(label);
         followUps.forEach(q => {
             const btn = document.createElement('button');
@@ -524,7 +538,7 @@ function showTyping() {
     const wrapper = document.createElement('div');
     wrapper.className = 'chat-msg bot';
     wrapper.id = 'chat-typing';
-    wrapper.innerHTML = '<div class="chat-msg-avatar"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div class="chat-typing-indicator"><span></span><span></span><span></span></div>';
+    wrapper.innerHTML = '<div class="chat-msg-avatar"><img src="/municipal-of-pagsanjan-logo.jpg" alt="Pagsanjan Logo" style="width:100%;height:100%;object-fit:cover;border-radius:50%"></div><div class="chat-typing-indicator"><span></span><span></span><span></span></div>';
     container.appendChild(wrapper);
     container.scrollTop = container.scrollHeight;
 }
