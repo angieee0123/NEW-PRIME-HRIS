@@ -1,0 +1,27 @@
+﻿/* Attendance Filters Row */
+.att-filters {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.att-filters .filter-select {
+    flex: 1;
+    min-width: 100px;
+}
+
+.att-filters .btn-export {
+    white-space: nowrap;
+}
+
+/* Modal Scroll */
+.modal-box {
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-body {
+    overflow-y: auto;
