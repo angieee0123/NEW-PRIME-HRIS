@@ -26,6 +26,8 @@
     {{-- Main Content --}}
     <main class="main-content">
 
+        @include('permanent.permanent-notification')
+
         {{-- Welcome Banner --}}
         <div class="welcome-banner">
             <div class="banner-left">
@@ -330,6 +332,8 @@
         </div>
     </div>
 </div>
+
+@include('permanent.permanent-chatbot')
 
 <style>
 .quick-action-btn { display:flex; align-items:center; gap:9px; padding:10px 14px; border:1.5px solid #eceaf8; border-radius:10px; background:#fafafe; cursor:pointer; font-size:13px; font-weight:600; color:#0b044d; transition:border-color 0.18s; }

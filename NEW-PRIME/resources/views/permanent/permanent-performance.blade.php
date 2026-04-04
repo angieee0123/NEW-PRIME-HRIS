@@ -1,56 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Performance | PRIME HRIS - Permanent Employee</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background: #f8f7fc; min-height: 100vh; }
-        
-        .app-layout { display: flex; min-height: 100vh; }
-        
-        .sidebar { width: 260px; background: #fff; border-right: 1px solid #e5e4f0; display: flex; flex-direction: column; position: fixed; height: 100vh; transition: all 0.3s; z-index: 100; }
-        .sidebar.collapsed { width: 70px; }
-        .sidebar-header { padding: 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e5e4f0; }
-        .logo { display: flex; align-items: center; gap: 10px; }
-        .logo-mark { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #0b044d, #2d1a8e); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 14px; }
-        .logo-text { font-size: 16px; font-weight: 800; color: #0b044d; }
-        .logo-sub { font-size: 10px; color: #9999bb; display: block; }
-        .toggle-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: #6b6a8a; padding: 4px 8px; }
-        .sidebar.collapsed .logo-text, .sidebar.collapsed .logo-sub, .sidebar.collapsed .nav-label, .sidebar.collapsed .nav-active-bar { display: none; }
-        
-        .nav-section-label { font-size: 10px; font-weight: 700; color: #9999bb; padding: 20px 20px 10px; letter-spacing: 1px; }
-        .sidebar.collapsed .nav-section-label { display: none; }
-        
-        .sidebar-nav { flex: 1; padding: 0 10px; overflow-y: auto; }
-        .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 10px; text-decoration: none; color: #6b6a8a; font-size: 13px; font-weight: 500; position: relative; margin-bottom: 4px; transition: all 0.15s; }
-        .nav-item:hover { background: #f8f7fc; color: #0b044d; }
-        .nav-item.active { background: #6b3fa0; color: #fff; }
-        .nav-item.active .nav-icon svg { stroke: #fff; }
-        .nav-icon { width: 20px; height: 20px; display: flex; align-items: center; }
-        .nav-icon svg { width: 18px; height: 18px; }
-        .nav-active-bar { position: absolute; right: 0; top: 50%; transform: translateY(-50%); width: 3px; height: 20px; background: #6b3fa0; border-radius: 2px; }
-        .sidebar.collapsed .nav-active-bar { display: none; }
-        
-        .sidebar-footer { padding: 16px; border-top: 1px solid #e5e4f0; display: flex; align-items: center; gap: 10px; }
-        .user-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #8e1e18, #5a0f0b); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px; font-weight: 700; }
-        .user-info { flex: 1; }
-        .user-name { font-size: 13px; font-weight: 600; color: #0b044d; }
-        .user-role { font-size: 11px; color: #9999bb; }
-        .logout-btn { background: none; border: none; cursor: pointer; color: #9999bb; padding: 6px; }
-        
-        .main-content { flex: 1; margin-left: 260px; padding: 24px 28px; transition: margin-left 0.3s; }
-        .sidebar.collapsed + .main-content, .sidebar.collapsed ~ .main-content { margin-left: 70px; }
-        
-        .welcome-banner { background: linear-gradient(135deg, #6b3fa0 0%, #5a2e8a 100%); border-radius: 16px; padding: 24px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-        .banner-left { display: flex; align-items: center; gap: 16px; }
-        .banner-avatar { width: 46px; height: 46px; border-radius: 50%; background: #8e1e18; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 16px; }
-        .banner-left h2 { font-size: 17px; font-weight: 700; color: #fff; margin: 0 0 4px; }
-        .banner-left p { font-size: 12px; color: rgba(255,255,255,0.55); margin: 0; }
-        
+@extends('layouts.app')
+
+@section('title', 'Performance · PRIME HRIS')
+
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+<style>
         .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
         .stat-card { background: #fff; border-radius: 14px; padding: 18px; border: 1.5px solid #e5e4f0; }
         .stat-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
@@ -66,34 +20,35 @@
         .table-title { font-size: 14px; font-weight: 700; color: #0b044d; margin: 0 0 2px; }
         .table-sub { font-size: 12px; color: #9999bb; margin: 0; }
         .table-actions { display: flex; gap: 10px; }
-        .btn-export { padding: 8px 14px; border-radius: 8px; border: none; background: #6b3fa0; font-size: 12px; font-weight: 600; color: #fff; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+        .btn-export { padding: 8px 14px; border-radius: 8px; border: none; background: linear-gradient(135deg,#0b044d,#1a0f6e); font-size: 12px; font-weight: 600; color: #fff; cursor: pointer; display: flex; align-items: center; gap: 6px; }
         .table-wrapper { overflow-x: auto; }
         .payroll-table { width: 100%; border-collapse: collapse; }
         .payroll-table th { text-align: left; padding: 12px 16px; font-size: 11px; font-weight: 700; color: #9999bb; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #e5e4f0; }
         .payroll-table td { padding: 14px 16px; font-size: 13px; color: #0b044d; border-bottom: 1px solid #f4f3ff; }
         .badge-status { font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 20px; display: inline-block; }
-        .badge-status.on-hold { background: #f3e8ff; color: #6b3fa0; border: 1px solid #e9d5ff; }
+        .badge-status.on-hold { background: #f0effe; color: #0b044d; border: 1px solid #e5e4f0; }
         .badge-status.processed { background: #e8f9ef; color: #15803d; border: 1px solid #bbf7d0; }
-        .badge-emptype { font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 20px; background: #f0effe; color: #6b3fa0; }
-        .dept-tag { font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 20px; background: #f0effe; color: #6b3fa0; }
+        .badge-emptype { font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 20px; background: #f0effe; color: #0b044d; }
+        .dept-tag { font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 20px; background: #f0effe; color: #0b044d; }
         .btn-view { padding: 7px 14px; border-radius: 8px; border: 1.5px solid #e5e4f0; background: #fff; font-size: 12px; font-weight: 600; color: #6b6a8a; cursor: pointer; }
-        .btn-view:hover { border-color: #6b3fa0; color: #6b3fa0; }
-        .btn-edit { padding: 7px 14px; border-radius: 8px; border: none; background: #6b3fa0; font-size: 12px; font-weight: 600; color: #fff; cursor: pointer; }
+        .btn-view:hover { border-color: #0b044d; color: #0b044d; }
+        .btn-edit { padding: 7px 14px; border-radius: 8px; border: none; background: linear-gradient(135deg,#0b044d,#1a0f6e); font-size: 12px; font-weight: 600; color: #fff; cursor: pointer; }
         .table-footer { display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; border-top: 1px solid #e5e4f0; background: #faf9ff; }
         .table-footer p { font-size: 12px; color: #6b6a8a; margin: 0; }
         
         .training-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; padding: 16px 20px; }
-        .training-card { background: #fff; border-radius: 14px; border: 1.5px solid #e5e4f0; padding: 20px; position: relative; }
-        .card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-        .card-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff; }
-        .card-title { font-size: 14px; font-weight: 700; color: #0b044d; }
-        .card-sub { font-size: 11px; color: #9999bb; margin-bottom: 2px; }
+        .training-card { background: #fff; border-radius: 14px; border: 1.5px solid #e5e4f0; padding: 20px; padding-top: 48px; position: relative; }
+        .card-header { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; }
+        .card-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff; flex-shrink: 0; }
+        .card-header > div { flex: 1; min-width: 0; }
+        .card-title { font-size: 14px; font-weight: 700; color: #0b044d; margin: 0; line-height: 1.3; word-wrap: break-word; }
+        .card-sub { font-size: 11px; color: #9999bb; margin: 4px 0 0; }
         .card-desc { font-size: 12.5px; color: #6b6a8a; line-height: 1.6; margin-bottom: 12px; }
         .card-footer { border-top: 1px solid #f0effe; padding-top: 12px; display: flex; align-items: center; gap: 8px; }
         
         .goals-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; padding: 16px 20px; }
         .goal-card { background: #fff; border-radius: 14px; border: 1.5px solid #e5e4f0; padding: 20px; cursor: pointer; }
-        .goal-card:hover { border-color: #6b3fa0; }
+        .goal-card:hover { border-color: #0b044d; }
         .goal-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
         .goal-header > div { flex: 1; }
         .goal-id { font-size: 10px; color: #9999bb; font-weight: 600; margin-bottom: 4px; display: block; }
@@ -145,59 +100,110 @@
         .modal-progress-label span:last-child { font-size: 11px; font-weight: 700; }
         .modal-footer { display: flex; justify-content: space-between; padding: 16px 24px; border-top: 1px solid #e5e4f0; }
         .modal-btn-ghost { padding: 10px 20px; border-radius: 9px; border: 1.5px solid #e5e4f0; background: #fff; font-size: 13px; font-weight: 600; color: #6b6a8a; cursor: pointer; }
-        .modal-btn-primary { padding: 10px 20px; border-radius: 9px; border: none; background: #6b3fa0; font-size: 13px; font-weight: 600; color: #fff; cursor: pointer; display: flex; align-items: center; gap: 8px; }
-        
+        .modal-btn-primary { padding: 10px 20px; border-radius: 9px; border: none; background: linear-gradient(135deg,#0b044d,#1a0f6e); font-size: 13px; font-weight: 600; color: #fff; cursor: pointer; display: flex; align-items: center; gap: 8px; }
         .hidden { display: none; }
-    </style>
-</head>
-<body>
-    <div class="app-layout">
-        <aside class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <div class="logo">
-                    <div class="logo-mark">P</div>
-                    <div>
-                        <div class="logo-text">PRIME HRIS</div>
-                        <span class="logo-sub">Pagsanjan</span>
-                    </div>
-                </div>
-                <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
-            </div>
-            
-            <div class="nav-section-label">MAIN MENU</div>
-            <nav class="sidebar-nav">
-                <a href="/permanent/dashboard" class="nav-item">Dashboard</a>
-                <a href="/permanent/payslip" class="nav-item">Payslip</a>
-                <a href="/permanent/attendance" class="nav-item">Attendance</a>
-                <a href="/permanent/leave" class="nav-item">Leave & Benefits</a>
-                <a href="/permanent/training" class="nav-item">Training</a>
-                <a href="/permanent/performance" class="nav-item active"><span class="nav-active-bar"></span>Performance</a>
-                <a href="/permanent/profile" class="nav-item">Profile</a>
-                <a href="/permanent/settings" class="nav-item">Settings</a>
-            </nav>
-            
-            <div class="sidebar-footer">
-                <div class="user-avatar">AR</div>
-                <div class="user-info">
-                    <div class="user-name">Ana R. Reyes</div>
-                    <div class="user-role">Permanent Employee</div>
-                </div>
-                <button class="logout-btn">⏻</button>
-            </div>
-        </aside>
         
-        <main class="main-content">
-            <div class="welcome-banner">
-                <div class="banner-left">
-                    <div class="banner-avatar">AR</div>
-                    <div>
-                        <h2>Ana R. Reyes</h2>
-                        <p>Nurse II · Municipal Health Office · PGS-0115</p>
-                    </div>
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+            .stat-card { padding: 14px; }
+            .stat-value { font-size: 18px; }
+            .stat-label { font-size: 11px; }
+            .stat-icon-wrap { width: 32px; height: 32px; }
+            .stat-icon-wrap svg { width: 15px; height: 15px; }
+            
+            .training-cards { grid-template-columns: 1fr; gap: 12px; padding: 12px 16px; }
+            .training-card { padding: 16px; padding-top: 44px; }
+            
+            .goals-grid { grid-template-columns: 1fr; gap: 12px; padding: 12px 16px; }
+            .goal-card { padding: 16px; }
+            
+            .chart-container { padding: 20px 16px; height: 180px; gap: 12px; }
+            .chart-bar-content span { font-size: 12px; }
+            .chart-bar-label p { font-size: 10px; }
+            
+            .table-header { flex-direction: column; align-items: flex-start; gap: 12px; padding: 14px 16px; }
+            .table-actions { width: 100%; justify-content: flex-start; flex-wrap: wrap; }
+            .btn-export { font-size: 11px; padding: 7px 12px; }
+            
+            .table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+            .payroll-table { min-width: 700px; }
+            .payroll-table th { font-size: 10px; padding: 10px 12px; }
+            .payroll-table td { font-size: 12px; padding: 12px; }
+            
+            .modal-box { max-width: 95%; margin: 0 10px; }
+            .modal-header { padding: 16px 18px; }
+            .pmodal-hero { gap: 10px; }
+            .pmodal-hero-icon { width: 44px; height: 44px; }
+            .modal-title { font-size: 16px; }
+            .modal-body { padding: 0 18px 16px; }
+            .modal-footer { padding: 12px 18px; flex-wrap: wrap; }
+            .modal-btn-ghost, .modal-btn-primary { flex: 1; min-width: 120px; justify-content: center; }
+        }
+        
+        @media (max-width: 480px) {
+            .stats-grid { grid-template-columns: 1fr; gap: 10px; }
+            .stat-card { padding: 12px; }
+            .stat-value { font-size: 16px; }
+            .stat-label { font-size: 10px; }
+            
+            .welcome-banner { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .banner-right { width: 100%; flex-wrap: wrap; gap: 8px; }
+            
+            .chart-container { flex-wrap: wrap; height: auto; }
+            .chart-bar { min-width: calc(50% - 8px); height: 150px; }
+            
+            .card-title { font-size: 13px; }
+            .card-desc { font-size: 12px; }
+            .goal-title { font-size: 13px; }
+            
+            .table-title { font-size: 13px; }
+            .table-sub { font-size: 11px; }
+            
+            .btn-view, .btn-edit { font-size: 11px; padding: 6px 10px; }
+            
+            .modal-btn-ghost, .modal-btn-primary { width: 100%; }
+        }
+</style>
+@endpush
+
+@section('content')
+<div class="app-layout">
+
+    {{-- Mobile Menu Button --}}
+    <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle menu">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+    </button>
+
+    {{-- Mobile Overlay --}}
+    <div class="mobile-overlay" id="mobile-overlay"></div>
+
+    @include('permanent.permanent-sidebarnav')
+
+    {{-- Main Content --}}
+    <main class="main-content">
+
+        @include('permanent.permanent-notification')
+
+        {{-- Welcome Banner --}}
+        <div class="welcome-banner">
+            <div class="banner-left">
+                <div class="banner-icon">
+                    <svg width="22" height="22" fill="none" stroke="#d9bb00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+                <div>
+                    <h2>Performance Overview</h2>
+                    <p>{{ now()->format('l, F j, Y') }} &nbsp;·&nbsp; Nurse II · Municipal Health Office · PGS-0115</p>
                 </div>
             </div>
-            
-            <div class="stats-grid">
+        </div>
+
+        {{-- Stats Grid --}}
+        <div class="stats-grid stats-grid-4">
                 <div class="stat-card">
                     <div class="stat-top">
                         <p class="stat-label">Latest Rating</p>
@@ -531,14 +537,18 @@
                     <p>Showing <strong>4</strong> evaluation records</p>
                 </div>
             </section>
-        </main>
-    </div>
-    
-    <div class="modal-overlay" id="evalModal">
+    </main>
+
+</div>
+
+@include('permanent.permanent-chatbot')
+
+{{-- Evaluation Modal --}}
+<div class="modal-overlay" id="evalModal">
         <div class="modal-box">
             <div class="modal-header">
                 <div class="pmodal-hero">
-                    <div class="pmodal-hero-icon" id="evalIcon" style="background:linear-gradient(135deg, #6b3fa0, #7c4fc0);">
+                    <div class="pmodal-hero-icon" id="evalIcon" style="background:linear-gradient(135deg, #0b044d, #1a0f6e);">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                     </div>
                     <div>
@@ -585,11 +595,44 @@
     </div>
     
     <script>
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('collapsed');
-        }
-        
-        function openEvaluation(id, period, rating, completedDate, evaluator, feedback, strengths, improvements) {
+    const sidebar      = document.getElementById('sidebar');
+    const toggleBtn    = document.getElementById('toggle-btn');
+    const logoText     = document.getElementById('logo-text');
+    const navLabel     = document.getElementById('nav-label');
+    const userInfo     = document.getElementById('user-info');
+    const sidebarFooter = document.getElementById('sidebar-footer');
+    const mobileBtn    = document.getElementById('mobile-menu-btn');
+    const overlay      = document.getElementById('mobile-overlay');
+
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', () => {
+            const collapsed = sidebar.classList.toggle('collapsed');
+            toggleBtn.textContent = collapsed ? '›' : '‹';
+            if (logoText) logoText.style.display  = collapsed ? 'none' : '';
+            if (navLabel) navLabel.style.display  = collapsed ? 'none' : '';
+            if (userInfo) userInfo.style.display  = collapsed ? 'none' : '';
+            if (sidebarFooter) sidebarFooter.classList.toggle('collapsed-footer', collapsed);
+            document.querySelectorAll('.nav-label, .nav-active-bar').forEach(el => {
+                el.style.display = collapsed ? 'none' : '';
+            });
+        });
+    }
+
+    if (mobileBtn) {
+        mobileBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('mobile-open');
+            overlay.classList.toggle('active');
+        });
+    }
+
+    if (overlay) {
+        overlay.addEventListener('click', () => {
+            sidebar.classList.remove('mobile-open');
+            overlay.classList.remove('active');
+        });
+    }
+
+    function openEvaluation(id, period, rating, completedDate, evaluator, feedback, strengths, improvements) {
             const ratingColor = rating >= 4.5 ? '#15803d' : rating >= 4.0 ? '#d9bb00' : '#8e1e18';
             document.getElementById('evalId').textContent = 'PERFORMANCE EVALUATION · ' + id;
             document.getElementById('evalSub').textContent = period + ' · Completed on ' + completedDate;
@@ -601,13 +644,13 @@
             document.getElementById('evalBody').innerHTML = '<div class="rating-box"><div class="rating-box-icon" style="background:linear-gradient(135deg,' + ratingColor + ',' + ratingColor + '99);"><span>' + rating + '</span></div><div><p>OVERALL RATING</p><p>' + rating + ' out of 5.0</p></div></div><div class="modal-section-label">EVALUATION DETAILS</div><div class="modal-row"><span>Evaluation Period</span><strong>' + period + '</strong></div><div class="modal-row"><span>Evaluator</span><strong>' + evaluator + '</strong></div><div class="modal-row"><span>Completed Date</span><strong>' + completedDate + '</strong></div><div class="modal-section-label" style="margin-top:20px;">FEEDBACK</div><p style="font-size:13px;color:#6b6a8a;line-height:1.6;margin-bottom:16px;">' + feedback + '</p><div class="modal-section-label">STRENGTHS</div><div class="strengths">' + strengthsHtml + '</div><div class="modal-section-label">AREAS FOR IMPROVEMENT</div><div class="strengths">' + improvementsHtml + '</div>';
             
             document.getElementById('evalModal').classList.add('show');
-        }
-        
-        function closeModal() {
+    }
+    
+    function closeModal() {
             document.getElementById('evalModal').classList.remove('show');
-        }
-        
-        function openGoal(title, category, progress, target, status) {
+    }
+    
+    function openGoal(title, category, progress, target, status) {
             const statusColor = status === 'Achieved' ? '#15803d' : status === 'In Progress' ? '#d9bb00' : '#8e1e18';
             document.getElementById('goalTitle').textContent = title;
             document.getElementById('goalSub').textContent = category + ' · Target: ' + target;
@@ -616,18 +659,17 @@
             document.getElementById('goalFooter').style.display = status !== 'Achieved' ? 'flex' : 'flex';
             document.getElementById('goalAction').style.display = status !== 'Achieved' ? 'block' : 'none';
             document.getElementById('goalModal').classList.add('show');
-        }
-        
-        function closeGoalModal() {
+    }
+    
+    function closeGoalModal() {
             document.getElementById('goalModal').classList.remove('show');
-        }
-        
-        document.addEventListener('keydown', function(e) {
+    }
+    
+    document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 closeModal();
                 closeGoalModal();
             }
         });
-    </script>
-</body>
-</html>
+</script>
+@endsection

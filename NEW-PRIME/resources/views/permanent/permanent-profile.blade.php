@@ -1,60 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile | PRIME HRIS - Permanent Employee</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background: #f8f7fc; min-height: 100vh; }
-        
-        .app-layout { display: flex; min-height: 100vh; }
-        
-        .sidebar { width: 260px; background: #fff; border-right: 1px solid #e5e4f0; display: flex; flex-direction: column; position: fixed; height: 100vh; transition: all 0.3s; z-index: 100; }
-        .sidebar.collapsed { width: 70px; }
-        .sidebar-header { padding: 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e5e4f0; }
-        .logo { display: flex; align-items: center; gap: 10px; }
-        .logo-mark { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #0b044d, #2d1a8e); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 14px; }
-        .logo-text { font-size: 16px; font-weight: 800; color: #0b044d; }
-        .logo-sub { font-size: 10px; color: #9999bb; display: block; }
-        .toggle-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: #6b6a8a; padding: 4px 8px; }
-        .sidebar.collapsed .logo-text, .sidebar.collapsed .logo-sub, .sidebar.collapsed .nav-label, .sidebar.collapsed .nav-active-bar { display: none; }
-        
-        .nav-section-label { font-size: 10px; font-weight: 700; color: #9999bb; padding: 20px 20px 10px; letter-spacing: 1px; }
-        .sidebar.collapsed .nav-section-label { display: none; }
-        
-        .sidebar-nav { flex: 1; padding: 0 10px; overflow-y: auto; }
-        .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 10px; text-decoration: none; color: #6b6a8a; font-size: 13px; font-weight: 500; position: relative; margin-bottom: 4px; transition: all 0.15s; }
-        .nav-item:hover { background: #f8f7fc; color: #0b044d; }
-        .nav-item.active { background: #0b044d; color: #fff; }
-        .nav-item.active .nav-icon svg { stroke: #fff; }
-        .nav-icon { width: 20px; height: 20px; display: flex; align-items: center; }
-        .nav-icon svg { width: 18px; height: 18px; }
-        .nav-active-bar { position: absolute; right: 0; top: 50%; transform: translateY(-50%); width: 3px; height: 20px; background: #0b044d; border-radius: 2px; }
-        .sidebar.collapsed .nav-active-bar { display: none; }
-        
-        .sidebar-footer { padding: 16px; border-top: 1px solid #e5e4f0; display: flex; align-items: center; gap: 10px; }
-        .user-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #8e1e18, #5a0f0b); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px; font-weight: 700; }
-        .user-info { flex: 1; }
-        .user-name { font-size: 13px; font-weight: 600; color: #0b044d; }
-        .user-role { font-size: 11px; color: #9999bb; }
-        .logout-btn { background: none; border: none; cursor: pointer; color: #9999bb; padding: 6px; }
-        
-        .main-content { flex: 1; margin-left: 260px; padding: 24px 28px; transition: margin-left 0.3s; }
-        .sidebar.collapsed + .main-content, .sidebar.collapsed ~ .main-content { margin-left: 70px; }
-        
-        .profile-header { background: linear-gradient(135deg, #0b044d 0%, #2d1a8e 100%); border-radius: 16px; padding: 24px 28px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; }
-        .profile-header-left { display: flex; align-items: center; gap: 20px; flex: 1; }
+@extends('layouts.app')
+
+@section('title', 'Profile · PRIME HRIS')
+
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+<style>
+        .profile-header { background: linear-gradient(135deg, #0b044d 0%, #2d1a8e 100%); border-radius: 16px; padding: 24px 28px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+        .profile-header-left { display: flex; align-items: center; gap: 20px; flex: 1; min-width: 280px; }
         .profile-avatar { width: 72px; height: 72px; border-radius: 50%; background: #8e1e18; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 26px; flex-shrink: 0; }
         .profile-info h2 { font-size: 20px; font-weight: 800; color: #ffffff; margin: 0 0 6px; }
         .profile-info p { font-size: 13px; color: rgba(255,255,255,0.65); margin-bottom: 10px; }
-        .banner-badge { font-size: 11px; font-weight: 600; padding: 6px 12px; border-radius: 20px; display: inline-flex; align-items: center; gap: 6px; }
-        .banner-badge:not(.outline) { background: #15803d; color: #fff; }
-        .banner-badge.outline { background: transparent; border: 1px solid rgba(255,255,255,0.3); color: #fff; }
-        .banner-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #fff; }
-        .btn-edit-profile { padding: 9px 20px; border-radius: 9px; border: none; background: #fff; color: #0b044d; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+        .btn-edit-profile { padding: 9px 20px; border-radius: 9px; border: none; background: #fff; color: #0b044d; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
         
         .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
         .stat-card { background: #fff; border-radius: 14px; padding: 18px; border: 1.5px solid #e5e4f0; }
@@ -71,19 +27,21 @@
         .table-title { font-size: 14px; font-weight: 700; color: #0b044d; margin: 0 0 2px; }
         .table-sub { font-size: 12px; color: #9999bb; margin: 0; }
         
-        .pmodal-tabs { display: flex; border-bottom: 1px solid #f0effe; padding: 0 24px; }
-        .pmodal-tab { background: none; border: none; padding: 14px 18px; font-size: 12px; font-weight: 600; color: #9999bb; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+        .pmodal-tabs { display: flex; border-bottom: 1px solid #f0effe; padding: 0 24px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .pmodal-tabs::-webkit-scrollbar { height: 2px; }
+        .pmodal-tabs::-webkit-scrollbar-thumb { background: #e5e4f0; border-radius: 2px; }
+        .pmodal-tab { background: none; border: none; padding: 14px 18px; font-size: 12px; font-weight: 600; color: #9999bb; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; white-space: nowrap; }
         .pmodal-tab.active { color: #0b044d; border-bottom-color: #0b044d; }
         
         .pmodal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .pmodal-field { padding: 14px 0; border-bottom: 1px solid #f4f3ff; }
         .pmodal-field span { display: block; font-size: 11px; color: #9999bb; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
-        .pmodal-field strong { display: block; font-size: 14px; color: #0b044d; font-weight: 600; }
+        .pmodal-field strong { display: block; font-size: 14px; color: #0b044d; font-weight: 600; word-break: break-word; }
         .pmodal-field.pmodal-full { grid-column: 1 / -1; }
         
-        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(11, 4, 77, 0.6); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.2s; }
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(11, 4, 77, 0.6); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.2s; padding: 20px; }
         .modal-overlay.show { opacity: 1; visibility: visible; }
-        .modal-box { background: #fff; border-radius: 16px; width: 90%; max-width: 560px; max-height: 90vh; overflow: hidden; transform: scale(0.95); transition: transform 0.2s; }
+        .modal-box { background: #fff; border-radius: 16px; width: 100%; max-width: 560px; max-height: 90vh; overflow: hidden; transform: scale(0.95); transition: transform 0.2s; }
         .modal-overlay.show .modal-box { transform: scale(1); }
         .modal-header { display: flex; justify-content: space-between; align-items: flex-start; padding: 20px 24px; border-bottom: 1px solid #e5e4f0; }
         .modal-eyebrow { font-size: 10px; font-weight: 700; color: #9999bb; letter-spacing: 1px; text-transform: uppercase; }
@@ -97,50 +55,84 @@
         .form-field input { width: 100%; padding: 10px 12px; border-radius: 8px; border: 1.5px solid #e5e4f0; font-size: 13px; font-family: 'Poppins', sans-serif; }
         .form-field input:focus { outline: none; border-color: #0b044d; }
         .form-field.form-full { grid-column: 1 / -1; }
-        .modal-footer { display: flex; justify-content: space-between; padding: 16px 24px; border-top: 1px solid #e5e4f0; }
+        .modal-footer { display: flex; justify-content: space-between; padding: 16px 24px; border-top: 1px solid #e5e4f0; gap: 10px; flex-wrap: wrap; }
         .modal-btn-ghost { padding: 10px 20px; border-radius: 9px; border: 1.5px solid #e5e4f0; background: #fff; font-size: 13px; font-weight: 600; color: #6b6a8a; cursor: pointer; }
         .modal-btn-primary { padding: 10px 20px; border-radius: 9px; border: none; background: #0b044d; font-size: 13px; font-weight: 600; color: #fff; cursor: pointer; display: flex; align-items: center; gap: 8px; }
         
         .hidden { display: none; }
-    </style>
-</head>
-<body>
-    <div class="app-layout">
-        <aside class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <div class="logo">
-                    <div class="logo-mark">P</div>
-                    <div>
-                        <div class="logo-text">PRIME HRIS</div>
-                        <span class="logo-sub">Pagsanjan</span>
-                    </div>
-                </div>
-                <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
-            </div>
-            
-            <div class="nav-section-label">MAIN MENU</div>
-            <nav class="sidebar-nav">
-                <a href="/permanent/dashboard" class="nav-item">Dashboard</a>
-                <a href="/permanent/payslip" class="nav-item">Payslip</a>
-                <a href="/permanent/attendance" class="nav-item">Attendance</a>
-                <a href="/permanent/leave" class="nav-item">Leave & Benefits</a>
-                <a href="/permanent/training" class="nav-item">Training</a>
-                <a href="/permanent/performance" class="nav-item">Performance</a>
-                <a href="/permanent/profile" class="nav-item active"><span class="nav-active-bar"></span>Profile</a>
-                <a href="/permanent/settings" class="nav-item">Settings</a>
-            </nav>
-            
-            <div class="sidebar-footer">
-                <div class="user-avatar">AR</div>
-                <div class="user-info">
-                    <div class="user-name">Ana R. Reyes</div>
-                    <div class="user-role">Permanent Employee</div>
-                </div>
-                <button class="logout-btn">⏻</button>
-            </div>
-        </aside>
         
-        <main class="main-content">
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+            
+            .profile-header { padding: 20px; }
+            .profile-header-left { flex-direction: column; align-items: flex-start; gap: 16px; min-width: 100%; }
+            .profile-avatar { width: 60px; height: 60px; font-size: 22px; }
+            .profile-info h2 { font-size: 18px; }
+            .profile-info p { font-size: 12px; }
+            .btn-edit-profile { width: 100%; justify-content: center; }
+            
+            .pmodal-grid { grid-template-columns: 1fr; gap: 0; }
+            .pmodal-field.pmodal-full { grid-column: 1; }
+            
+            .pmodal-tabs { padding: 0 16px; }
+            .pmodal-tab { padding: 12px 14px; font-size: 11px; }
+            
+            .table-section > div:last-child { padding: 20px 16px !important; }
+            
+            .form-grid { grid-template-columns: 1fr; gap: 12px; }
+            .form-field.form-full { grid-column: 1; }
+            
+            .modal-header { padding: 16px 20px; }
+            .modal-body { padding: 0 20px 16px; }
+            .modal-footer { padding: 12px 20px; }
+            .modal-title { font-size: 16px; }
+            
+            .modal-btn-ghost, .modal-btn-primary { flex: 1; justify-content: center; }
+        }
+        
+        @media (max-width: 480px) {
+            .stats-grid { grid-template-columns: 1fr; gap: 12px; }
+            
+            .stat-card { padding: 16px; }
+            .stat-value { font-size: 20px; }
+            
+            .profile-header { padding: 16px; }
+            .profile-avatar { width: 52px; height: 52px; font-size: 20px; }
+            .profile-info h2 { font-size: 16px; }
+            
+            .table-title { font-size: 13px; }
+            .table-sub { font-size: 11px; }
+            
+            .pmodal-tab { padding: 10px 12px; font-size: 10px; }
+            .pmodal-field strong { font-size: 13px; }
+            
+            .modal-box { max-width: 100%; border-radius: 12px; }
+        }
+</style>
+@endpush
+
+@section('content')
+<div class="app-layout">
+
+    {{-- Mobile Menu Button --}}
+    <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle menu">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+    </button>
+
+    {{-- Mobile Overlay --}}
+    <div class="mobile-overlay" id="mobile-overlay"></div>
+
+    @include('permanent.permanent-sidebarnav')
+
+    {{-- Main Content --}}
+    <main class="main-content">
+
+        @include('permanent.permanent-notification')
             <div class="profile-header">
                 <div class="profile-header-left">
                     <div class="profile-avatar">AR</div>
@@ -263,8 +255,11 @@
                     </div>
                 </div>
             </section>
-        </main>
-    </div>
+    </main>
+
+</div>
+
+@include('permanent.permanent-chatbot')
     
     <div class="modal-overlay" id="editModal">
         <div class="modal-box">
@@ -321,35 +316,66 @@
             </div>
         </div>
     </div>
-    
-    <script>
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('collapsed');
-        }
-        
-        function switchTab(tabId, btn) {
+<script>
+    const sidebar      = document.getElementById('sidebar');
+    const toggleBtn    = document.getElementById('toggle-btn');
+    const logoText     = document.getElementById('logo-text');
+    const navLabel     = document.getElementById('nav-label');
+    const userInfo     = document.getElementById('user-info');
+    const sidebarFooter = document.getElementById('sidebar-footer');
+    const mobileBtn    = document.getElementById('mobile-menu-btn');
+    const overlay      = document.getElementById('mobile-overlay');
+
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', () => {
+            const collapsed = sidebar.classList.toggle('collapsed');
+            toggleBtn.textContent = collapsed ? '›' : '‹';
+            if (logoText) logoText.style.display  = collapsed ? 'none' : '';
+            if (navLabel) navLabel.style.display  = collapsed ? 'none' : '';
+            if (userInfo) userInfo.style.display  = collapsed ? 'none' : '';
+            if (sidebarFooter) sidebarFooter.classList.toggle('collapsed-footer', collapsed);
+            document.querySelectorAll('.nav-label, .nav-active-bar').forEach(el => {
+                el.style.display = collapsed ? 'none' : '';
+            });
+        });
+    }
+
+    if (mobileBtn) {
+        mobileBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('mobile-open');
+            overlay.classList.toggle('active');
+        });
+    }
+
+    if (overlay) {
+        overlay.addEventListener('click', () => {
+            sidebar.classList.remove('mobile-open');
+            overlay.classList.remove('active');
+        });
+    }
+
+    function switchTab(tabId, btn) {
             document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
             document.getElementById('tab-' + tabId).classList.remove('hidden');
             document.querySelectorAll('.pmodal-tab').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-        }
-        
-        function openEditModal() {
+    }
+    
+    function openEditModal() {
             document.getElementById('editModal').classList.add('show');
-        }
-        
-        function closeEditModal() {
+    }
+    
+    function closeEditModal() {
             document.getElementById('editModal').classList.remove('show');
-        }
-        
-        function saveProfile() {
+    }
+    
+    function saveProfile() {
             alert('Profile updated successfully!');
             closeEditModal();
-        }
-        
-        document.addEventListener('keydown', function(e) {
+    }
+    
+    document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') closeEditModal();
-        });
-    </script>
-</body>
-</html>
+    });
+</script>
+@endsection
