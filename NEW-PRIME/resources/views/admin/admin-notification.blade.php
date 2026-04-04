@@ -1,173 +1,195 @@
-<div class="notification-container">
-    <button class="notification-bell" id="notificationBell" onclick="toggleNotifications()">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-        </svg>
-        <span class="notification-badge" id="notificationBadge">5</span>
+<div class="notif-wrap">
+    <button class="notif-btn" id="notifBtn" onclick="toggleNotif()">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span class="notif-dot" id="notifDot"></span>
     </button>
-    
-    <div class="notification-dropdown" id="notificationDropdown" style="display: none;">
-        <div class="notification-header">
-            <h3>Notifications</h3>
-            <button class="notification-mark-read" onclick="markAllAsRead()">Mark all as read</button>
+    <div class="notif-panel" id="notifPanel">
+        <div class="notif-head">
+            <div>
+                <h3>Notifications</h3>
+                <p>You have <span id="unreadCount">3</span> unread message</p>
+            </div>
+            <button class="notif-clear" onclick="clearAll()">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            </button>
         </div>
-        <div class="notification-list">
-            <div class="notification-item unread" data-id="1">
-                <div class="notification-icon" style="background: #e8f9ef;">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2">
-                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                        <polyline points="22 4 12 14.01 9 11.01"/>
-                    </svg>
+        <div class="notif-body" id="notifBody">
+            <div class="notif-card new" onclick="goToPage('/admin/leave-requests')">
+                <div class="notif-left">
+                    <div class="notif-avatar" style="background:linear-gradient(135deg,#15803d,#22c55e)">
+                        <svg width="16" height="16" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    </div>
                 </div>
-                <div class="notification-content">
-                    <p class="notification-title">Leave Request Approved</p>
-                    <p class="notification-text">Juan Dela Cruz's vacation leave has been approved</p>
-                    <p class="notification-time">5 minutes ago</p>
+                <div class="notif-right">
+                    <h4>New Leave Request</h4>
+                    <p class="notif-msg">Juan Dela Cruz submitted a vacation leave request for 3 days</p>
+                    <span class="notif-time">
+                        <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        5 minutes ago
+                    </span>
                 </div>
-                <button class="notification-close" onclick="dismissNotification(1)">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="18" y1="6" x2="6" y2="18"/>
-                        <line x1="6" y1="6" x2="18" y2="18"/>
-                    </svg>
-                </button>
             </div>
-            <div class="notification-item unread" data-id="2">
-                <div class="notification-icon" style="background: #fefce8;">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a16207" stroke-width="2">
-                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                        <circle cx="9" cy="7" r="4"/>
-                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-                    </svg>
+            <div class="notif-card new" onclick="goToPage('/admin/payroll')">
+                <div class="notif-left">
+                    <div class="notif-avatar" style="background:linear-gradient(135deg,#0369a1,#0ea5e9)">
+                        <svg width="16" height="16" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                    </div>
                 </div>
-                <div class="notification-content">
-                    <p class="notification-title">New Employee Added</p>
-                    <p class="notification-text">Maria Reyes has been added to the system</p>
-                    <p class="notification-time">1 hour ago</p>
+                <div class="notif-right">
+                    <h4>Payroll Processing</h4>
+                    <p class="notif-msg">Monthly payroll for December 2024 is ready for review and approval</p>
+                    <span class="notif-time">
+                        <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        15 minutes ago
+                    </span>
                 </div>
-                <button class="notification-close" onclick="dismissNotification(2)">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="18" y1="6" x2="6" y2="18"/>
-                        <line x1="6" y1="6" x2="18" y2="18"/>
-                    </svg>
-                </button>
             </div>
-            <div class="notification-item unread" data-id="3">
-                <div class="notification-icon" style="background: #f0effe;">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0b044d" stroke-width="2">
-                        <rect x="1" y="4" width="22" height="16" rx="2"/>
-                        <line x1="1" y1="10" x2="23" y2="10"/>
-                    </svg>
+            <div class="notif-card new" onclick="goToPage('/admin/attendance')">
+                <div class="notif-left">
+                    <div class="notif-avatar" style="background:linear-gradient(135deg,#b91c1c,#ef4444)">
+                        <svg width="16" height="16" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    </div>
                 </div>
-                <div class="notification-content">
-                    <p class="notification-title">Payroll Processing</p>
-                    <p class="notification-text">June 16-30 payroll is ready for review</p>
-                    <p class="notification-time">2 hours ago</p>
+                <div class="notif-right">
+                    <h4>Late Attendance Alert</h4>
+                    <p class="notif-msg">Maria Santos logged in 30 minutes late today without prior notice</p>
+                    <span class="notif-time">
+                        <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        1 hour ago
+                    </span>
                 </div>
-                <button class="notification-close" onclick="dismissNotification(3)">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="18" y1="6" x2="6" y2="18"/>
-                        <line x1="6" y1="6" x2="18" y2="18"/>
-                    </svg>
-                </button>
             </div>
-            <div class="notification-item" data-id="4">
-                <div class="notification-icon" style="background: #fdf0ef;">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8e1e18" stroke-width="2">
-                        <circle cx="12" cy="12" r="10"/>
-                        <line x1="12" y1="8" x2="12" y2="12"/>
-                        <line x1="12" y1="16" x2="12.01" y2="16"/>
-                    </svg>
+            <div class="notif-card" onclick="goToPage('/admin/employees')">
+                <div class="notif-left">
+                    <div class="notif-avatar" style="background:linear-gradient(135deg,#7c3aed,#a78bfa)">
+                        <svg width="16" height="16" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    </div>
                 </div>
-                <div class="notification-content">
-                    <p class="notification-title">DTR Submission Reminder</p>
-                    <p class="notification-text">8 employees haven't submitted their DTR</p>
-                    <p class="notification-time">3 hours ago</p>
+                <div class="notif-right">
+                    <h4>New Employee Onboarding</h4>
+                    <p class="notif-msg">Pedro Reyes has been added to the system. Complete onboarding checklist</p>
+                    <span class="notif-time">
+                        <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        2 hours ago
+                    </span>
                 </div>
-                <button class="notification-close" onclick="dismissNotification(4)">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="18" y1="6" x2="6" y2="18"/>
-                        <line x1="6" y1="6" x2="18" y2="18"/>
-                    </svg>
-                </button>
             </div>
-            <div class="notification-item" data-id="5">
-                <div class="notification-icon" style="background: #e8f9ef;">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2">
-                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
-                        <rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
-                        <path d="M9 14l2 2 4-4"/>
-                    </svg>
+            <div class="notif-card" onclick="goToPage('/admin/settings')">
+                <div class="notif-left">
+                    <div class="notif-avatar" style="background:linear-gradient(135deg,#ea580c,#fb923c)">
+                        <svg width="16" height="16" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    </div>
                 </div>
-                <div class="notification-content">
-                    <p class="notification-title">Training Completed</p>
-                    <p class="notification-text">Leadership Development Program completed by 25 employees</p>
-                    <p class="notification-time">Yesterday</p>
+                <div class="notif-right">
+                    <h4>System Update</h4>
+                    <p class="notif-msg">PRIME HRIS will undergo maintenance on Dec 25, 2024 from 2:00 AM - 4:00 AM</p>
+                    <span class="notif-time">
+                        <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        3 hours ago
+                    </span>
                 </div>
-                <button class="notification-close" onclick="dismissNotification(5)">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="18" y1="6" x2="6" y2="18"/>
-                        <line x1="6" y1="6" x2="18" y2="18"/>
-                    </svg>
-                </button>
             </div>
-        </div>
-        <div class="notification-footer">
-            <a href="#" class="notification-view-all">View all notifications</a>
+            <div class="notif-card" onclick="goToPage('/admin/leave-requests')">
+                <div class="notif-left">
+                    <div class="notif-avatar" style="background:linear-gradient(135deg,#15803d,#22c55e)">
+                        <svg width="16" height="16" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                </div>
+                <div class="notif-right">
+                    <h4>Leave Request Approved</h4>
+                    <p class="notif-msg">Anna Garcia's sick leave request for Dec 20-21 has been approved</p>
+                    <span class="notif-time">
+                        <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        Yesterday
+                    </span>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
+<style>
+.notif-wrap { position: fixed; top: 20px; right: 20px; z-index: 1000; }
+.notif-btn { width: 48px; height: 48px; border-radius: 12px; background: #fff; border: 1px solid #e5e5f0; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: all 0.2s; position: relative; }
+.notif-btn:hover { border-color: #0b044d; box-shadow: 0 4px 12px rgba(11,4,77,0.15); transform: translateY(-1px); }
+.notif-btn svg { color: #0b044d; }
+.notif-dot { position: absolute; top: 10px; right: 10px; width: 8px; height: 8px; background: #ef4444; border-radius: 50%; border: 2px solid #fff; display: none; }
+.notif-dot.active { display: block; animation: pulse 2s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+.notif-panel { position: absolute; top: 56px; right: 0; width: 420px; background: #fff; border-radius: 16px; box-shadow: 0 12px 32px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.05); display: none; flex-direction: column; overflow: hidden; }
+.notif-panel.open { display: flex; animation: fadeIn 0.25s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+.notif-head { padding: 20px 24px; border-bottom: 1px solid #f0effe; display: flex; justify-content: space-between; align-items: flex-start; }
+.notif-head h3 { font-size: 16px; font-weight: 700; color: #0b044d; margin: 0 0 4px; }
+.notif-head p { font-size: 12px; color: #7c7c99; margin: 0; }
+.notif-head p span { font-weight: 600; color: #0b044d; }
+.notif-clear { width: 32px; height: 32px; border-radius: 8px; background: none; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; color: #7c7c99; }
+.notif-clear:hover { background: #f7f6ff; color: #ef4444; }
+.notif-body { max-height: 480px; overflow-y: auto; padding: 12px; }
+.notif-card { background: #fafafe; border: 1px solid #f0effe; border-radius: 12px; padding: 16px; display: flex; gap: 14px; margin-bottom: 12px; transition: all 0.2s; }
+.notif-card:last-child { margin-bottom: 0; }
+.notif-card:hover { background: #f7f6ff; border-color: #e5e5f0; }
+.notif-card.new { background: linear-gradient(135deg, #f7f6ff 0%, #fafafe 100%); border-color: #d9d9ee; }
+.notif-left { flex-shrink: 0; }
+.notif-avatar { width: 44px; height: 44px; border-radius: 11px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+.notif-right { flex: 1; min-width: 0; }
+.notif-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+.notif-top h4 { font-size: 13.5px; font-weight: 700; color: #0b044d; margin: 0; }
+.notif-close { background: none; border: none; color: #9999bb; font-size: 22px; cursor: pointer; width: 24px; height: 24px; border-radius: 6px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; line-height: 1; padding: 0; }
+.notif-close:hover { background: #f0effe; color: #0b044d; }
+.notif-msg { font-size: 12.5px; color: #5a5888; line-height: 1.5; margin: 0 0 12px; }
+.notif-footer { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.notif-time { font-size: 11px; color: #9999bb; display: flex; align-items: center; gap: 4px; }
+.notif-time svg { opacity: 0.7; }
+.notif-actions { display: flex; gap: 6px; }
+.notif-action-btn { padding: 6px 12px; border-radius: 7px; border: 1px solid #e5e5f0; background: #fff; color: #5a5888; font-size: 11.5px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+.notif-action-btn:hover { border-color: #0b044d; color: #0b044d; background: #f7f6ff; }
+.notif-action-btn.primary { background: #0b044d; color: #fff; border-color: #0b044d; }
+.notif-action-btn.primary:hover { background: #1a0f6e; }
+.notif-empty { padding: 60px 24px; text-align: center; }
+.notif-empty svg { width: 48px; height: 48px; color: #d9d9ee; margin-bottom: 12px; }
+.notif-empty p { font-size: 13px; color: #9999bb; margin: 0; }
+</style>
+
 <script>
-    function toggleNotifications() {
-        const dropdown = document.getElementById('notificationDropdown');
-        dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+function toggleNotif() {
+    const panel = document.getElementById('notifPanel');
+    panel.classList.toggle('open');
+}
+
+function goToPage(url) {
+    window.location.href = url;
+}
+
+function clearAll() {
+    const body = document.getElementById('notifBody');
+    body.innerHTML = '<div class="notif-empty"><svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><p>No notifications</p></div>';
+    updateCount();
+}
+
+function updateCount() {
+    const newCount = document.querySelectorAll('.notif-card.new').length;
+    const dot = document.getElementById('notifDot');
+    const countSpan = document.getElementById('unreadCount');
+    countSpan.textContent = newCount;
+    if (newCount > 0) {
+        dot.classList.add('active');
+    } else {
+        dot.classList.remove('active');
     }
+}
 
-    function dismissNotification(id) {
-        const item = document.querySelector(`.notification-item[data-id="${id}"]`);
-        if (item) {
-            item.style.animation = 'slideOut 0.3s ease';
-            setTimeout(() => {
-                item.remove();
-                updateNotificationBadge();
-            }, 300);
-        }
+document.addEventListener('click', (e) => {
+    const wrap = document.querySelector('.notif-wrap');
+    const panel = document.getElementById('notifPanel');
+    if (!wrap.contains(e.target)) {
+        panel.classList.remove('open');
     }
+});
 
-    function markAllAsRead() {
-        document.querySelectorAll('.notification-item.unread').forEach(item => {
-            item.classList.remove('unread');
-        });
-        updateNotificationBadge();
-    }
-
-    function updateNotificationBadge() {
-        const unreadCount = document.querySelectorAll('.notification-item.unread').length;
-        const badge = document.getElementById('notificationBadge');
-        if (unreadCount > 0) {
-            badge.textContent = unreadCount;
-            badge.style.display = 'flex';
-        } else {
-            badge.style.display = 'none';
-        }
-    }
-
-    document.addEventListener('click', function(event) {
-        const notificationContainer = document.querySelector('.notification-container');
-        const dropdown = document.getElementById('notificationDropdown');
-        if (notificationContainer && !notificationContainer.contains(event.target)) {
-            dropdown.style.display = 'none';
-        }
-    });
-
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes slideOut {
-            from { opacity: 1; transform: translateX(0); }
-            to { opacity: 0; transform: translateX(100%); }
-        }
-    `;
-    document.head.appendChild(style);
+window.addEventListener('load', updateCount);
 </script>
+
+<style>
+@keyframes fadeOut { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(0.95); } }
+</style>
