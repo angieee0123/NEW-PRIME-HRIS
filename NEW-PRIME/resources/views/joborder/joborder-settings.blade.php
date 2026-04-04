@@ -1,567 +1,483 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Settings | PRIME HRIS - Job Order Employee</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background: #f8f7fc; min-height: 100vh; }
-        
-        .app-layout { display: flex; min-height: 100vh; }
-        
-        .sidebar { width: 260px; background: #fff; border-right: 1px solid #e5e4f0; display: flex; flex-direction: column; position: fixed; height: 100vh; transition: all 0.3s; z-index: 100; }
-        .sidebar.collapsed { width: 70px; }
-        .sidebar-header { padding: 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e5e4f0; }
-        .logo { display: flex; align-items: center; gap: 10px; }
-        .logo-mark { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #0b044d, #2d1a8e); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 14px; }
-        .logo-text { font-size: 16px; font-weight: 800; color: #0b044d; }
-        .logo-sub { font-size: 10px; color: #9999bb; display: block; }
-        .toggle-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: #6b6a8a; padding: 4px 8px; }
-        
-        .nav-section-label { font-size: 10px; font-weight: 700; color: #9999bb; padding: 20px 20px 10px; letter-spacing: 1px; }
-        
-        .sidebar-nav { flex: 1; padding: 0 10px; overflow-y: auto; }
-        .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 10px; text-decoration: none; color: #6b6a8a; font-size: 13px; font-weight: 500; position: relative; margin-bottom: 4px; transition: all 0.15s; }
-        .nav-item:hover { background: #f8f7fc; color: #0b044d; }
-        .nav-item.active { background: #15803d; color: #fff; }
-        .nav-icon { width: 20px; height: 20px; display: flex; align-items: center; }
-        .nav-icon svg { width: 18px; height: 18px; }
-        .nav-active-bar { position: absolute; right: 0; top: 50%; transform: translateY(-50%); width: 3px; height: 20px; background: #15803d; border-radius: 2px; }
-        
-        .sidebar-footer { padding: 16px; border-top: 1px solid #e5e4f0; display: flex; align-items: center; gap: 10px; }
-        .user-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #1a6e3c, #145c30); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px; font-weight: 700; }
-        .user-info { flex: 1; }
-        .user-name { font-size: 13px; font-weight: 600; color: #0b044d; }
-        .user-role { font-size: 11px; color: #9999bb; }
-        .logout-btn { background: none; border: none; cursor: pointer; color: #9999bb; padding: 6px; }
-        
-        .main-content { flex: 1; margin-left: 260px; padding: 24px 28px; transition: margin-left 0.3s; }
-        
-        .settings-container { display: flex; gap: 24px; max-width: 1200px; }
-        
-        .settings-sidebar { width: 280px; flex-shrink: 0; }
-        .settings-profile-card { background: linear-gradient(135deg, #1a6e3c 0%, #22c55e 100%); border-radius: 16px; padding: 24px; color: #fff; }
-        .settings-profile-avatar { width: 60px; height: 60px; border-radius: 50%; background: #fff; color: #1a6e3c; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; margin: 0 auto 12px; }
-        .settings-profile-name { font-size: 18px; font-weight: 700; text-align: center; margin: 0 0 4px; }
-        .settings-profile-role { font-size: 12px; text-align: center; opacity: 0.8; margin: 0 0 16px; }
-        .settings-profile-info { display: flex; flex-direction: column; gap: 12px; }
-        .settings-profile-info-item { display: flex; justify-content: space-between; font-size: 11px; }
-        .settings-profile-info-label { opacity: 0.7; text-transform: uppercase; letter-spacing: 0.5px; }
-        .settings-profile-info-value { font-weight: 600; }
-        .settings-profile-info-item.pending { background: rgba(255,255,255,0.15); padding: 8px 10px; border-radius: 8px; margin-top: 8px; }
-        
-        .settings-nav { background: #fff; border-radius: 16px; border: 1.5px solid #e5e4f0; padding: 8px; margin-top: 16px; }
-        .settings-nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 10px; font-size: 13px; font-weight: 500; color: #6b6a8a; cursor: pointer; transition: all 0.15s; width: 100%; border: none; background: none; text-align: left; }
-        .settings-nav-item:hover { background: #f8f7fc; color: #0b044d; }
-        .settings-nav-item.active { background: #1a6e3c; color: #fff; }
-        .settings-nav-icon { width: 18px; height: 18px; display: flex; align-items: center; }
-        .settings-nav-icon svg { width: 16px; height: 16px; }
-        .settings-nav-label { flex: 1; }
-        .settings-nav-arrow { display: none; }
-        .settings-nav-item.active .settings-nav-arrow { display: block; }
-        
-        .settings-tip { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 1.5px solid #bbf7d0; border-radius: 12px; padding: 14px; margin-top: 16px; }
-        .settings-tip-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-        .settings-tip-icon { width: 18px; height: 18px; display: flex; align-items: center; }
-        .settings-tip-title { font-size: 10px; font-weight: 700; color: #15803d; letter-spacing: 0.5px; margin: 0; }
-        .settings-tip-text { font-size: 12px; color: #166534; margin: 0; line-height: 1.6; }
-        
-        .settings-content { flex: 1; }
-        
-        .settings-section { background: #fff; border-radius: 14px; border: 1.5px solid #e5e4f0; margin-bottom: 20px; overflow: hidden; }
-        .settings-section-title { font-size: 14px; font-weight: 700; color: #0b044d; padding: 16px 20px; border-bottom: 1px solid #e5e4f0; margin: 0; }
-        .settings-section-content { padding: 20px; }
-        
-        .settings-form-wrapper { display: flex; flex-direction: column; gap: 16px; }
-        .settings-avatar-row { display: flex; align-items: center; gap: 14px; padding-bottom: 16px; border-bottom: 1px solid #e5e4f0; margin-bottom: 8px; }
-        .settings-avatar { width: 56px; height: 56px; border-radius: 50%; background: #1a6e3c; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; }
-        .settings-avatar-info { flex: 1; }
-        .settings-avatar-name { font-size: 15px; font-weight: 700; color: #0b044d; margin: 0 0 2px; }
-        .settings-avatar-role { font-size: 12px; color: #9999bb; margin: 0; }
-        
-        .settings-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-        .settings-form-field { display: flex; flex-direction: column; gap: 6px; }
-        .settings-form-field label { font-size: 11px; font-weight: 700; color: #9999bb; text-transform: uppercase; letter-spacing: 0.5px; }
-        .settings-form-field input { padding: 10px 14px; border: 1.5px solid #e5e4f0; border-radius: 8px; font-size: 13px; color: #0b044d; transition: border-color 0.2s; }
-        .settings-form-field input:focus { outline: none; border-color: #1a6e3c; }
-        
-        .settings-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid #f4f3ff; }
-        .settings-row:last-child { border-bottom: none; }
-        .settings-row-label { flex: 1; }
-        .settings-row-title { font-size: 13px; font-weight: 600; color: #0b044d; margin: 0 0 2px; }
-        .settings-row-desc { font-size: 12px; color: #9999bb; margin: 0; }
-        .settings-row-control { flex-shrink: 0; }
-        
-        .settings-toggle { width: 44px; height: 24px; border-radius: 12px; border: none; cursor: pointer; position: relative; transition: background 0.2s; }
-        .settings-toggle.active { background: #1a6e3c; }
-        .settings-toggle:not(.active) { background: #dddcf0; }
-        .settings-toggle-thumb { position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; border-radius: 50%; background: #fff; transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
-        .settings-toggle.active .settings-toggle-thumb { transform: translateX(20px); }
-        
-        .settings-select { padding: 8px 12px; border: 1.5px solid #e5e4f0; border-radius: 8px; font-size: 13px; color: #0b044d; background: #fff; cursor: pointer; }
-        
-        .settings-form-field-full { grid-column: 1 / -1; }
-        
-        .settings-message { font-size: 12px; padding: 10px 14px; border-radius: 8px; margin: 8px 0; }
-        .settings-message.success { background: #f0fdf4; color: #15803d; }
-        .settings-message.error { background: #fef2f2; color: #dc2626; }
-        
-        .settings-btn-primary { padding: 10px 20px; background: #1a6e3c; color: #fff; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; }
-        .settings-btn-primary:hover { background: #166534; }
-        
-        .settings-save-bar { display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px; padding-top: 16px; border-top: 1px solid #e5e4f0; }
-        .settings-btn-reset { padding: 10px 20px; border: 1.5px solid #e5e4f0; border-radius: 8px; background: #fff; font-size: 13px; font-weight: 600; color: #6b6a8a; cursor: pointer; }
-        .settings-btn-reset:hover { border-color: #0b044d; color: #0b044d; }
-        .settings-btn-save { padding: 10px 20px; border: none; border-radius: 8px; background: #1a6e3c; font-size: 13px; font-weight: 600; color: #fff; cursor: pointer; display: flex; align-items: center; gap: 8px; }
-        .settings-btn-save:hover { background: #166534; }
-        .settings-btn-save.saved { background: #15803d; }
-        
-        .contract-notice { background: #f0fdf4; border: 1.5px solid #bbf7d0; border-radius: 10px; padding: 14px 18px; margin-top: 16px; display: flex; gap: 12px; }
-        .contract-notice-icon { flex-shrink: 0; }
-        .contract-notice-title { font-size: 12.5px; color: #15803d; font-weight: 700; margin-bottom: 4px; }
-        .contract-notice-text { font-size: 12px; color: #166534; line-height: 1.7; margin: 0; }
-    </style>
-</head>
-<body>
-    <div class="app-layout">
-        <aside class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <div class="logo">
-                    <div class="logo-mark">P</div>
-                    <div>
-                        <div class="logo-text">PRIME HRIS</div>
-                        <span class="logo-sub">Pagsanjan</span>
+@extends('layouts.app')
+
+@section('title', 'Settings · PRIME HRIS')
+
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+<style>
+.app-layout { display: flex; min-height: 100vh; }
+.main-content { flex: 1; margin-left: 260px; padding: 24px 28px; transition: margin-left 0.3s; }
+.sidebar.collapsed + .main-content, .sidebar.collapsed ~ .main-content { margin-left: 70px; }
+.settings-container { display: flex; gap: 24px; }
+.settings-sidebar { width: 280px; flex-shrink: 0; }
+.settings-profile-card { background: linear-gradient(135deg, #15803d 0%, #166534 100%); border-radius: 16px; padding: 24px; margin-bottom: 16px; }
+.settings-profile-avatar { width: 56px; height: 56px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; color: #15803d; font-size: 18px; font-weight: 700; margin-bottom: 12px; }
+.settings-profile-name { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 2px; }
+.settings-profile-role { font-size: 12px; color: rgba(255,255,255,0.7); margin-bottom: 16px; }
+.settings-profile-info-item { margin-bottom: 12px; }
+.settings-profile-info-item p:first-child { font-size: 10px; color: rgba(255,255,255,0.5); font-weight: 600; letter-spacing: 0.5px; margin-bottom: 2px; }
+.settings-profile-info-item p:last-child { font-size: 12px; color: #fff; font-weight: 600; }
+.settings-profile-info-item.contract-end { background: rgba(255,255,255,0.15); border-radius: 8px; padding: 8px 10px; margin-top: 4px; }
+.settings-nav { background: #fff; border-radius: 14px; border: 1.5px solid #e5e4f0; overflow: hidden; }
+.settings-nav-item { display: flex; align-items: center; gap: 12px; width: 100%; padding: 14px 18px; border: none; background: none; font-size: 13px; font-weight: 500; color: #6b6a8a; cursor: pointer; text-align: left; transition: all 0.15s; position: relative; font-family: 'Poppins', sans-serif; }
+.settings-nav-item:hover { background: #f8f7fc; }
+.settings-nav-item.active { background: #15803d; color: #fff; }
+.settings-nav-item.active svg { stroke: #fff; }
+.settings-tip { background: #f0fdf4; border-radius: 14px; border: 1.5px solid #bbf7d0; padding: 16px; margin-top: 16px; }
+.settings-tip-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.settings-tip-title { font-size: 10px; font-weight: 700; color: #15803d; letter-spacing: 0.5px; }
+.settings-tip-text { font-size: 12px; color: #166534; line-height: 1.5; }
+.settings-content { flex: 1; }
+.settings-section { background: #fff; border-radius: 14px; border: 1.5px solid #e5e4f0; margin-bottom: 20px; }
+.settings-section-title { font-size: 14px; font-weight: 700; color: #0b044d; padding: 18px 20px; border-bottom: 1px solid #e5e4f0; }
+.settings-section-content { padding: 20px; }
+.settings-form-wrapper { margin-bottom: 20px; }
+.settings-avatar-row { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #f0effe; }
+.settings-avatar { width: 64px; height: 64px; border-radius: 50%; background: #15803d; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 20px; font-weight: 700; }
+.settings-avatar-name { font-size: 15px; font-weight: 700; color: #0b044d; margin-bottom: 2px; }
+.settings-avatar-role { font-size: 12px; color: #6b6a8a; }
+.settings-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.settings-form-field label { display: block; font-size: 11px; font-weight: 700; color: #9999bb; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+.settings-form-field input, .settings-form-field select { width: 100%; padding: 10px 14px; border-radius: 8px; border: 1.5px solid #e5e4f0; font-size: 13px; font-family: 'Poppins', sans-serif; }
+.settings-form-field input:focus, .settings-form-field select:focus { outline: none; border-color: #15803d; }
+.settings-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid #f4f3ff; }
+.settings-row:last-child { border-bottom: none; }
+.settings-row-label p:first-child { font-size: 13px; font-weight: 600; color: #0b044d; margin-bottom: 2px; }
+.settings-row-label p:last-child { font-size: 11px; color: #9999bb; }
+.settings-toggle { width: 44px; height: 24px; border-radius: 12px; background: #e5e4f0; border: none; cursor: pointer; position: relative; transition: background 0.2s; }
+.settings-toggle.active { background: #15803d; }
+.settings-toggle-thumb { position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; border-radius: 50%; background: #fff; transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+.settings-toggle.active .settings-toggle-thumb { transform: translateX(20px); }
+.settings-select { padding: 8px 12px; border-radius: 8px; border: 1.5px solid #e5e4f0; font-size: 13px; font-family: 'Poppins', sans-serif; background: #fff; }
+.settings-message { font-size: 13px; padding: 10px 14px; border-radius: 8px; margin-bottom: 12px; }
+.settings-message.success { background: #f0fdf4; color: #15803d; }
+.settings-message.error { background: #fef2f2; color: #dc2626; }
+.settings-save-bar { display: flex; justify-content: flex-end; gap: 10px; padding-top: 16px; border-top: 1px solid #f0effe; margin-top: 16px; }
+.settings-btn-reset { padding: 10px 20px; border-radius: 9px; border: 1.5px solid #e5e4f0; background: #fff; font-size: 13px; font-weight: 600; color: #6b6a8a; cursor: pointer; font-family: 'Poppins', sans-serif; }
+.settings-btn-save { padding: 10px 20px; border-radius: 9px; border: none; background: #15803d; font-size: 13px; font-weight: 600; color: #fff; cursor: pointer; display: flex; align-items: center; gap: 8px; font-family: 'Poppins', sans-serif; }
+.settings-btn-save.saved { background: #166534; }
+.settings-btn-primary { padding: 10px 20px; border-radius: 9px; border: none; background: #15803d; font-size: 13px; font-weight: 600; color: #fff; cursor: pointer; font-family: 'Poppins', sans-serif; }
+.notif-readonly { background: #f7f6ff; padding: 5px 12px; border-radius: 7px; font-size: 13px; font-weight: 600; color: #5a5888; }
+.hidden { display: none; }
+.mobile-menu-btn { display: none; position: fixed; top: 20px; left: 20px; z-index: 101; width: 44px; height: 44px; border-radius: 12px; background: #0b044d; border: none; cursor: pointer; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(11,4,77,0.25); color: #fff; }
+.mobile-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(11,4,77,0.4); backdrop-filter: blur(2px); z-index: 99; }
+.mobile-overlay.active { display: block; }
+@media (max-width: 768px) {
+    .mobile-menu-btn { display: flex; }
+    .sidebar { transform: translateX(-100%); }
+    .sidebar.mobile-open { transform: translateX(0); }
+    .main-content { margin-left: 0 !important; }
+    .settings-container { flex-direction: column; }
+    .settings-sidebar { width: 100%; }
+    .settings-form-grid { grid-template-columns: 1fr; }
+}
+</style>
+@endpush
+
+@section('content')
+<div class="app-layout">
+
+    {{-- Mobile Menu Button --}}
+    <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle menu">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+    </button>
+
+    {{-- Mobile Overlay --}}
+    <div class="mobile-overlay" id="mobile-overlay"></div>
+
+    @include('joborder.joborder-sidebarnav')
+
+    {{-- Main Content --}}
+    <main class="main-content">
+
+        @include('joborder.joborder-notification')
+
+        <div class="settings-container">
+
+            {{-- Settings Sidebar --}}
+            <div class="settings-sidebar">
+                <div class="settings-profile-card">
+                    <div class="settings-profile-avatar">JD</div>
+                    <h3 class="settings-profile-name">Juan D. Cruz</h3>
+                    <p class="settings-profile-role">JO-0042</p>
+                    <div class="settings-profile-info">
+                        <div class="settings-profile-info-item">
+                            <p>POSITION</p>
+                            <p>Utility Worker I</p>
+                        </div>
+                        <div class="settings-profile-info-item">
+                            <p>DEPARTMENT</p>
+                            <p>General Services Office</p>
+                        </div>
+                        <div class="settings-profile-info-item">
+                            <p>TYPE</p>
+                            <p>Job Order</p>
+                        </div>
+                        <div class="settings-profile-info-item contract-end">
+                            <p>CONTRACT ENDS</p>
+                            <p>Dec 31, 2025</p>
+                        </div>
                     </div>
                 </div>
-                <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+
+                <div class="settings-nav">
+                    <button class="settings-nav-item active" onclick="switchTab('profile', this)">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        <span>Profile</span>
+                    </button>
+                    <button class="settings-nav-item" onclick="switchTab('security', this)">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        <span>Security</span>
+                    </button>
+                    <button class="settings-nav-item" onclick="switchTab('notifications', this)">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                        <span>Notifications</span>
+                    </button>
+                </div>
+
+                <div class="settings-tip">
+                    <div class="settings-tip-header">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                        <p class="settings-tip-title">CONTRACT REMINDER</p>
+                    </div>
+                    <p class="settings-tip-text">Your contract ends Dec 31, 2025. Contact HR for renewal inquiries.</p>
+                </div>
             </div>
-            
-            <div class="nav-section-label">MAIN MENU</div>
-            <nav class="sidebar-nav">
-                <a href="/joborder/dashboard" class="nav-item">Dashboard</a>
-                <a href="/joborder/payslip" class="nav-item">Payslip</a>
-                <a href="/joborder/attendance" class="nav-item">Attendance</a>
-                <a href="/joborder/leave" class="nav-item">Leave Request</a>
-                <a href="/joborder/training" class="nav-item">Training</a>
-                <a href="/joborder/profile" class="nav-item">Profile</a>
-                <a href="/joborder/settings" class="nav-item active"><span class="nav-active-bar"></span>Settings</a>
-            </nav>
-            
-            <div class="sidebar-footer">
-                <div class="user-avatar">JD</div>
-                <div class="user-info">
-                    <div class="user-name">Juan D. Cruz</div>
-                    <div class="user-role">Job Order</div>
-                </div>
-                <button class="logout-btn">⏻</button>
-            </div>
-        </aside>
-        
-        <main class="main-content">
-            <div class="settings-container">
-                <div class="settings-sidebar">
-                    <div class="settings-profile-card">
-                        <div class="settings-profile-avatar">JD</div>
-                        <h3 class="settings-profile-name">Juan D. Cruz</h3>
-                        <p class="settings-profile-role">JO-0042</p>
-                        <div class="settings-profile-info">
-                            <div class="settings-profile-info-item">
-                                <span class="settings-profile-info-label">POSITION</span>
-                                <span class="settings-profile-info-value">Utility Worker I</span>
-                            </div>
-                            <div class="settings-profile-info-item">
-                                <span class="settings-profile-info-label">DEPARTMENT</span>
-                                <span class="settings-profile-info-value">General Services Office</span>
-                            </div>
-                            <div class="settings-profile-info-item">
-                                <span class="settings-profile-info-label">TYPE</span>
-                                <span class="settings-profile-info-value">Job Order</span>
-                            </div>
-                            <div class="settings-profile-info-item pending">
-                                <span class="settings-profile-info-label">CONTRACT ENDS</span>
-                                <span class="settings-profile-info-value">Dec 31, 2025</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="settings-nav">
-                        <button class="settings-nav-item active" onclick="switchTab('profile')">
-                            <span class="settings-nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
-                            <span class="settings-nav-label">Profile</span>
-                            <span class="settings-nav-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="9 18 15 12 9 6"/></svg></span>
-                        </button>
-                        <button class="settings-nav-item" onclick="switchTab('security')">
-                            <span class="settings-nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
-                            <span class="settings-nav-label">Security</span>
-                            <span class="settings-nav-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="9 18 15 12 9 6"/></svg></span>
-                        </button>
-                        <button class="settings-nav-item" onclick="switchTab('notifications')">
-                            <span class="settings-nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></span>
-                            <span class="settings-nav-label">Notifications</span>
-                            <span class="settings-nav-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="9 18 15 12 9 6"/></svg></span>
-                        </button>
-                    </div>
-                    
-                    <div class="settings-tip">
-                        <div class="settings-tip-header">
-                            <span class="settings-tip-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
-                            <p class="settings-tip-title">CONTRACT INFO</p>
-                        </div>
-                        <p class="settings-tip-text">Your contract is valid until Dec 31, 2025. Contact HR for renewal.</p>
-                    </div>
-                </div>
-                
-                <div class="settings-content" id="settingsContent">
-                    <!-- Profile Tab -->
-                    <div id="tab-profile">
-                        <div class="settings-section">
-                            <h3 class="settings-section-title">Personal Information</h3>
-                            <div class="settings-section-content">
-                                <div class="settings-form-wrapper">
-                                    <div class="settings-avatar-row">
-                                        <div class="settings-avatar">JD</div>
-                                        <div class="settings-avatar-info">
-                                            <p class="settings-avatar-name">Juan D. Cruz</p>
-                                            <p class="settings-avatar-role">Utility Worker I · General Services Office</p>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="settings-form-grid">
-                                        <div class="settings-form-field">
-                                            <label>First Name</label>
-                                            <input type="text" value="Juan" id="firstName">
-                                        </div>
-                                        <div class="settings-form-field">
-                                            <label>Last Name</label>
-                                            <input type="text" value="D. Cruz" id="lastName">
-                                        </div>
-                                        <div class="settings-form-field">
-                                            <label>Email Address</label>
-                                            <input type="email" value="juan.cruz@pagsanjan.gov.ph" id="email">
-                                        </div>
-                                        <div class="settings-form-field">
-                                            <label>Contact No.</label>
-                                            <input type="text" value="09181234568" id="contact">
-                                        </div>
-                                    </div>
-                                    <div class="settings-save-bar">
-                                        <button class="settings-btn-reset" onclick="resetProfile()">Reset</button>
-                                        <button class="settings-btn-save" onclick="saveProfile()">
-                                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-                                            Save Changes
-                                        </button>
+
+            {{-- Settings Content --}}
+            <div class="settings-content">
+
+                {{-- Profile Tab --}}
+                <div id="tab-profile">
+                    <div class="settings-section">
+                        <h3 class="settings-section-title">Personal Information</h3>
+                        <div class="settings-section-content">
+                            <div class="settings-form-wrapper">
+                                <div class="settings-avatar-row">
+                                    <div class="settings-avatar">JD</div>
+                                    <div>
+                                        <p class="settings-avatar-name">Juan D. Cruz</p>
+                                        <p class="settings-avatar-role">Utility Worker I · General Services Office</p>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        
-                        <div class="settings-section">
-                            <h3 class="settings-section-title">Employment Details</h3>
-                            <div class="settings-section-content">
-                                <div class="settings-row">
-                                    <div class="settings-row-label">
-                                        <p class="settings-row-title">Employee ID</p>
-                                        <p class="settings-row-desc">Assigned by HR — not editable</p>
+                                <div class="settings-form-grid">
+                                    <div class="settings-form-field">
+                                        <label>First Name</label>
+                                        <input type="text" id="firstName" value="Juan">
                                     </div>
-                                    <div class="settings-row-control">
-                                        <span style="font-size:13px;font-weight:600;color:#5a5888;background:#f7f6ff;padding:5px 12px;border-radius:7px;">JO-0042</span>
+                                    <div class="settings-form-field">
+                                        <label>Last Name</label>
+                                        <input type="text" id="lastName" value="D. Cruz">
                                     </div>
-                                </div>
-                                <div class="settings-row">
-                                    <div class="settings-row-label">
-                                        <p class="settings-row-title">Position</p>
-                                        <p class="settings-row-desc">Assigned by HR — not editable</p>
+                                    <div class="settings-form-field">
+                                        <label>Email Address</label>
+                                        <input type="email" id="email" value="juan.cruz@pagsanjan.gov.ph">
                                     </div>
-                                    <div class="settings-row-control">
-                                        <span style="font-size:13px;font-weight:600;color:#5a5888;background:#f7f6ff;padding:5px 12px;border-radius:7px;">Utility Worker I</span>
-                                    </div>
-                                </div>
-                                <div class="settings-row">
-                                    <div class="settings-row-label">
-                                        <p class="settings-row-title">Department</p>
-                                        <p class="settings-row-desc">Assigned by HR — not editable</p>
-                                    </div>
-                                    <div class="settings-row-control">
-                                        <span style="font-size:13px;font-weight:600;color:#5a5888;background:#f7f6ff;padding:5px 12px;border-radius:7px;">General Services Office</span>
-                                    </div>
-                                </div>
-                                <div class="settings-row">
-                                    <div class="settings-row-label">
-                                        <p class="settings-row-title">Employment Type</p>
-                                        <p class="settings-row-desc">Assigned by HR — not editable</p>
-                                    </div>
-                                    <div class="settings-row-control">
-                                        <span style="font-size:13px;font-weight:600;color:#5a5888;background:#f7f6ff;padding:5px 12px;border-radius:7px;">Job Order</span>
-                                    </div>
-                                </div>
-                                <div class="settings-row">
-                                    <div class="settings-row-label">
-                                        <p class="settings-row-title">Contract Start</p>
-                                        <p class="settings-row-desc">Assigned by HR — not editable</p>
-                                    </div>
-                                    <div class="settings-row-control">
-                                        <span style="font-size:13px;font-weight:600;color:#5a5888;background:#f7f6ff;padding:5px 12px;border-radius:7px;">Jan 1, 2025</span>
-                                    </div>
-                                </div>
-                                <div class="settings-row">
-                                    <div class="settings-row-label">
-                                        <p class="settings-row-title">Contract End</p>
-                                        <p class="settings-row-desc">Assigned by HR — not editable</p>
-                                    </div>
-                                    <div class="settings-row-control">
-                                        <span style="font-size:13px;font-weight:600;color:#5a5888;background:#f7f6ff;padding:5px 12px;border-radius:7px;">Dec 31, 2025</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="contract-notice">
-                            <div class="contract-notice-icon">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                            </div>
-                            <div>
-                                <p class="contract-notice-title">Contract Renewal Notice</p>
-                                <p class="contract-notice-text">Your Job Order contract is valid until <strong>Dec 31, 2025</strong>. Contact the HR Management Office for renewal inquiries.</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Security Tab -->
-                    <div id="tab-security" style="display:none;">
-                        <div class="settings-section">
-                            <h3 class="settings-section-title">Change Password</h3>
-                            <div class="settings-section-content">
-                                <div class="settings-form-wrapper">
-                                    <div class="settings-form-field settings-form-field-full">
-                                        <label>Current Password</label>
-                                        <input type="password" id="currentPw" placeholder="••••••••">
-                                    </div>
-                                    <div class="settings-form-field settings-form-field-full">
-                                        <label>New Password</label>
-                                        <input type="password" id="newPw" placeholder="••••••••">
-                                    </div>
-                                    <div class="settings-form-field settings-form-field-full">
-                                        <label>Confirm New Password</label>
-                                        <input type="password" id="confirmPw" placeholder="••••••••">
-                                    </div>
-                                    <p id="pwMessage" style="display:none;"></p>
-                                    <button class="settings-btn-primary" onclick="changePassword()">Change Password</button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="settings-section">
-                            <h3 class="settings-section-title">Login Security</h3>
-                            <div class="settings-section-content">
-                                <div class="settings-row">
-                                    <div class="settings-row-label">
-                                        <p class="settings-row-title">Two-Factor Authentication</p>
-                                        <p class="settings-row-desc">Require OTP on every login</p>
-                                    </div>
-                                    <div class="settings-row-control">
-                                        <button class="settings-toggle" id="twoFAToggle" onclick="toggle2FA()">
-                                            <span class="settings-toggle-thumb"></span>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="settings-row">
-                                    <div class="settings-row-label">
-                                        <p class="settings-row-title">Session Timeout</p>
-                                        <p class="settings-row-desc">Auto-logout after inactivity</p>
-                                    </div>
-                                    <div class="settings-row-control">
-                                        <select class="settings-select" id="sessionTimeout" onchange="updateTimeout()">
-                                            <option value="15">15 minutes</option>
-                                            <option value="30" selected>30 minutes</option>
-                                            <option value="60">1 hour</option>
-                                            <option value="120">2 hours</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Notifications Tab -->
-                    <div id="tab-notifications" style="display:none;">
-                        <div class="settings-section">
-                            <h3 class="settings-section-title">In-App Notifications</h3>
-                            <div class="settings-section-content">
-                                <div class="settings-row">
-                                    <div class="settings-row-label">
-                                        <p class="settings-row-title">Payslip Available</p>
-                                        <p class="settings-row-desc">Notify when your payslip is ready for the pay period</p>
-                                    </div>
-                                    <div class="settings-row-control">
-                                        <button class="settings-toggle active" id="toggle-payslip" onclick="toggleNotif('payslip')">
-                                            <span class="settings-toggle-thumb"></span>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="settings-row">
-                                    <div class="settings-row-label">
-                                        <p class="settings-row-title">Contract Renewal Alert</p>
-                                        <p class="settings-row-desc">Notify 30 days before your contract expires</p>
-                                    </div>
-                                    <div class="settings-row-control">
-                                        <button class="settings-toggle active" id="toggle-contract" onclick="toggleNotif('contract')">
-                                            <span class="settings-toggle-thumb"></span>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="settings-row">
-                                    <div class="settings-row-label">
-                                        <p class="settings-row-title">DTR Deadline Reminder</p>
-                                        <p class="settings-row-desc">Remind before DTR submission deadline</p>
-                                    </div>
-                                    <div class="settings-row-control">
-                                        <button class="settings-toggle active" id="toggle-dtr" onclick="toggleNotif('dtr')">
-                                            <span class="settings-toggle-thumb"></span>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="settings-row">
-                                    <div class="settings-row-label">
-                                        <p class="settings-row-title">Attendance Alert</p>
-                                        <p class="settings-row-desc">Notify when a late or absent entry is recorded</p>
-                                    </div>
-                                    <div class="settings-row-control">
-                                        <button class="settings-toggle" id="toggle-attendance" onclick="toggleNotif('attendance')">
-                                            <span class="settings-toggle-thumb"></span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="settings-section">
-                            <h3 class="settings-section-title">Email Notifications</h3>
-                            <div class="settings-section-content">
-                                <div class="settings-row">
-                                    <div class="settings-row-label">
-                                        <p class="settings-row-title">Email Digest</p>
-                                        <p class="settings-row-desc">Receive a daily summary of updates via email</p>
-                                    </div>
-                                    <div class="settings-row-control">
-                                        <button class="settings-toggle active" id="toggle-email" onclick="toggleNotif('email')">
-                                            <span class="settings-toggle-thumb"></span>
-                                        </button>
+                                    <div class="settings-form-field">
+                                        <label>Contact No.</label>
+                                        <input type="text" id="contact" value="09171234567">
                                     </div>
                                 </div>
                                 <div class="settings-save-bar">
+                                    <button class="settings-btn-reset" onclick="resetProfile()">Reset</button>
+                                    <button class="settings-btn-save" onclick="saveProfile()">Save Changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h3 class="settings-section-title">Employment Details</h3>
+                        <div class="settings-section-content">
+                            <div class="settings-row">
+                                <div class="settings-row-label">
+                                    <p>Employee ID</p>
+                                    <p>Assigned by HR — not editable</p>
+                                </div>
+                                <span class="notif-readonly">JO-0042</span>
+                            </div>
+                            <div class="settings-row">
+                                <div class="settings-row-label">
+                                    <p>Position</p>
+                                    <p>Assigned by HR — not editable</p>
+                                </div>
+                                <span class="notif-readonly">Utility Worker I</span>
+                            </div>
+                            <div class="settings-row">
+                                <div class="settings-row-label">
+                                    <p>Department</p>
+                                    <p>Assigned by HR — not editable</p>
+                                </div>
+                                <span class="notif-readonly">General Services Office</span>
+                            </div>
+                            <div class="settings-row">
+                                <div class="settings-row-label">
+                                    <p>Employment Type</p>
+                                    <p>Assigned by HR — not editable</p>
+                                </div>
+                                <span class="notif-readonly">Job Order</span>
+                            </div>
+                            <div class="settings-row">
+                                <div class="settings-row-label">
+                                    <p>Contract Start</p>
+                                    <p>Assigned by HR — not editable</p>
+                                </div>
+                                <span class="notif-readonly">Jan 1, 2025</span>
+                            </div>
+                            <div class="settings-row">
+                                <div class="settings-row-label">
+                                    <p>Contract End</p>
+                                    <p>Assigned by HR — not editable</p>
+                                </div>
+                                <span class="notif-readonly">Dec 31, 2025</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Security Tab --}}
+                <div id="tab-security" class="hidden">
+                    <div class="settings-section">
+                        <h3 class="settings-section-title">Change Password</h3>
+                        <div class="settings-section-content">
+                            <div class="settings-form-wrapper">
+                                <div class="settings-form-field" style="margin-bottom:12px;">
+                                    <label>Current Password</label>
+                                    <input type="password" id="currentPw" placeholder="••••••••">
+                                </div>
+                                <div class="settings-form-field" style="margin-bottom:12px;">
+                                    <label>New Password</label>
+                                    <input type="password" id="newPw" placeholder="••••••••">
+                                </div>
+                                <div class="settings-form-field" style="margin-bottom:16px;">
+                                    <label>Confirm New Password</label>
+                                    <input type="password" id="confirmPw" placeholder="••••••••">
+                                </div>
+                                <p class="settings-message hidden" id="pwMsg"></p>
+                                <button class="settings-btn-primary" onclick="changePassword()">Change Password</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h3 class="settings-section-title">Login Security</h3>
+                        <div class="settings-section-content">
+                            <div class="settings-row">
+                                <div class="settings-row-label">
+                                    <p>Two-Factor Authentication</p>
+                                    <p>Require OTP on every login</p>
+                                </div>
+                                <button class="settings-toggle" id="twoFA" onclick="toggleSetting(this)">
+                                    <span class="settings-toggle-thumb"></span>
+                                </button>
+                            </div>
+                            <div class="settings-row">
+                                <div class="settings-row-label">
+                                    <p>Session Timeout</p>
+                                    <p>Auto-logout after inactivity</p>
+                                </div>
+                                <select class="settings-select">
+                                    <option value="15">15 minutes</option>
+                                    <option value="30" selected>30 minutes</option>
+                                    <option value="60">1 hour</option>
+                                    <option value="120">2 hours</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Notifications Tab --}}
+                <div id="tab-notifications" class="hidden">
+                    <div class="settings-section">
+                        <h3 class="settings-section-title">In-App Notifications</h3>
+                        <div class="settings-section-content">
+                            <div class="settings-row">
+                                <div class="settings-row-label">
+                                    <p>Payslip Available</p>
+                                    <p>Notify when your payslip is ready for the pay period</p>
+                                </div>
+                                <button class="settings-toggle active" onclick="toggleSetting(this)">
+                                    <span class="settings-toggle-thumb"></span>
+                                </button>
+                            </div>
+                            <div class="settings-row">
+                                <div class="settings-row-label">
+                                    <p>Contract Renewal Alert</p>
+                                    <p>Notify 30 days before your contract expires</p>
+                                </div>
+                                <button class="settings-toggle active" onclick="toggleSetting(this)">
+                                    <span class="settings-toggle-thumb"></span>
+                                </button>
+                            </div>
+                            <div class="settings-row">
+                                <div class="settings-row-label">
+                                    <p>DTR Deadline Reminder</p>
+                                    <p>Remind before DTR submission deadline</p>
+                                </div>
+                                <button class="settings-toggle active" onclick="toggleSetting(this)">
+                                    <span class="settings-toggle-thumb"></span>
+                                </button>
+                            </div>
+                            <div class="settings-row">
+                                <div class="settings-row-label">
+                                    <p>Attendance Alert</p>
+                                    <p>Notify when a late or absent entry is recorded</p>
+                                </div>
+                                <button class="settings-toggle" onclick="toggleSetting(this)">
+                                    <span class="settings-toggle-thumb"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h3 class="settings-section-title">Email Notifications</h3>
+                        <div class="settings-section-content">
+                            <div class="settings-row">
+                                <div class="settings-row-label">
+                                    <p>Email Digest</p>
+                                    <p>Receive a daily summary of updates via email</p>
+                                </div>
+                                <button class="settings-toggle active" onclick="toggleSetting(this)">
+                                    <span class="settings-toggle-thumb"></span>
+                                </button>
+                            </div>
+                            <div class="settings-form-wrapper">
+                                <div class="settings-save-bar">
                                     <button class="settings-btn-reset" onclick="resetNotifs()">Reset</button>
-                                    <button class="settings-btn-save" onclick="saveNotifs()">
-                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-                                        Save Changes
-                                    </button>
+                                    <button class="settings-btn-save" onclick="saveNotifs()">Save Changes</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
             </div>
-        </main>
-    </div>
-    
-    <script>
-        const ACCENT = '#1a6e3c';
-        
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('collapsed');
+        </div>
+    </main>
+</div>
+
+<script>
+    const sidebar       = document.getElementById('sidebar');
+    const toggleBtn     = document.getElementById('toggle-btn');
+    const logoText      = document.getElementById('logo-text');
+    const navLabel      = document.getElementById('nav-label');
+    const userInfo      = document.getElementById('user-info');
+    const sidebarFooter = document.getElementById('sidebar-footer');
+    const mobileBtn     = document.getElementById('mobile-menu-btn');
+    const overlay       = document.getElementById('mobile-overlay');
+
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', () => {
+            const collapsed = sidebar.classList.toggle('collapsed');
+            toggleBtn.textContent = collapsed ? '›' : '‹';
+            if (logoText) logoText.style.display = collapsed ? 'none' : '';
+            if (navLabel) navLabel.style.display = collapsed ? 'none' : '';
+            if (userInfo) userInfo.style.display = collapsed ? 'none' : '';
+            if (sidebarFooter) sidebarFooter.classList.toggle('collapsed-footer', collapsed);
+            document.querySelectorAll('.nav-label, .nav-active-bar').forEach(el => {
+                el.style.display = collapsed ? 'none' : '';
+            });
+        });
+    }
+
+    if (mobileBtn) {
+        mobileBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('mobile-open');
+            overlay.classList.toggle('active');
+        });
+    }
+
+    if (overlay) {
+        overlay.addEventListener('click', () => {
+            sidebar.classList.remove('mobile-open');
+            overlay.classList.remove('active');
+        });
+    }
+
+    function switchTab(tabId, btn) {
+        document.querySelectorAll('.settings-nav-item').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.querySelectorAll('#tab-profile, #tab-security, #tab-notifications').forEach(t => t.classList.add('hidden'));
+        document.getElementById('tab-' + tabId).classList.remove('hidden');
+    }
+
+    function toggleSetting(btn) {
+        btn.classList.toggle('active');
+    }
+
+    function resetProfile() {
+        document.getElementById('firstName').value = 'Juan';
+        document.getElementById('lastName').value = 'D. Cruz';
+        document.getElementById('email').value = 'juan.cruz@pagsanjan.gov.ph';
+        document.getElementById('contact').value = '09171234567';
+    }
+
+    function saveProfile() {
+        const btn = document.querySelector('#tab-profile .settings-btn-save');
+        btn.textContent = '✓ Saved!';
+        btn.classList.add('saved');
+        setTimeout(() => {
+            btn.textContent = 'Save Changes';
+            btn.classList.remove('saved');
+        }, 2000);
+    }
+
+    function changePassword() {
+        const current = document.getElementById('currentPw').value;
+        const newPw   = document.getElementById('newPw').value;
+        const confirm = document.getElementById('confirmPw').value;
+        const msg     = document.getElementById('pwMsg');
+
+        if (!current || !newPw || !confirm) {
+            msg.textContent = 'Please fill in all fields.';
+            msg.className = 'settings-message error';
+            msg.classList.remove('hidden');
+            return;
         }
-        
-        function switchTab(tab) {
-            document.querySelectorAll('.settings-nav-item').forEach(btn => btn.classList.remove('active'));
-            event.target.closest('.settings-nav-item').classList.add('active');
-            
-            document.getElementById('tab-profile').style.display = tab === 'profile' ? 'block' : 'none';
-            document.getElementById('tab-security').style.display = tab === 'security' ? 'block' : 'none';
-            document.getElementById('tab-notifications').style.display = tab === 'notifications' ? 'block' : 'none';
+        if (newPw !== confirm) {
+            msg.textContent = 'New passwords do not match.';
+            msg.className = 'settings-message error';
+            msg.classList.remove('hidden');
+            return;
         }
-        
-        function resetProfile() {
-            document.getElementById('firstName').value = 'Juan';
-            document.getElementById('lastName').value = 'D. Cruz';
-            document.getElementById('email').value = 'juan.cruz@pagsanjan.gov.ph';
-            document.getElementById('contact').value = '09181234568';
+        if (newPw.length < 8) {
+            msg.textContent = 'Password must be at least 8 characters.';
+            msg.className = 'settings-message error';
+            msg.classList.remove('hidden');
+            return;
         }
-        
-        function saveProfile() {
-            const btn = document.querySelector('#tab-profile .settings-btn-save');
-            btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Saved!';
-            btn.classList.add('saved');
-            setTimeout(() => {
-                btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Save Changes';
-                btn.classList.remove('saved');
-            }, 2000);
-        }
-        
-        function changePassword() {
-            const current = document.getElementById('currentPw').value;
-            const newPw = document.getElementById('newPw').value;
-            const confirm = document.getElementById('confirmPw').value;
-            const msg = document.getElementById('pwMessage');
-            
-            if (!current || !newPw || !confirm) {
-                msg.textContent = 'Please fill in all fields.';
-                msg.className = 'settings-message error';
-                msg.style.display = 'block';
-                return;
-            }
-            if (newPw !== confirm) {
-                msg.textContent = 'New passwords do not match.';
-                msg.className = 'settings-message error';
-                msg.style.display = 'block';
-                return;
-            }
-            if (newPw.length < 8) {
-                msg.textContent = 'Password must be at least 8 characters.';
-                msg.className = 'settings-message error';
-                msg.style.display = 'block';
-                return;
-            }
-            
-            msg.textContent = '✓ Password changed successfully.';
-            msg.className = 'settings-message success';
-            msg.style.display = 'block';
-            document.getElementById('currentPw').value = '';
-            document.getElementById('newPw').value = '';
-            document.getElementById('confirmPw').value = '';
-            setTimeout(() => msg.style.display = 'none', 3000);
-        }
-        
-        function toggle2FA() {
-            document.getElementById('twoFAToggle').classList.toggle('active');
-        }
-        
-        function updateTimeout() {
-            // Session timeout updated
-        }
-        
-        function toggleNotif(id) {
-            document.getElementById('toggle-' + id).classList.toggle('active');
-        }
-        
-        function resetNotifs() {
-            document.getElementById('toggle-payslip').classList.add('active');
-            document.getElementById('toggle-contract').classList.add('active');
-            document.getElementById('toggle-dtr').classList.add('active');
-            document.getElementById('toggle-attendance').classList.remove('active');
-            document.getElementById('toggle-email').classList.add('active');
-        }
-        
-        function saveNotifs() {
-            const btn = document.querySelector('#tab-notifications .settings-btn-save');
-            btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Saved!';
-            btn.classList.add('saved');
-            setTimeout(() => {
-                btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Save Changes';
-                btn.classList.remove('saved');
-            }, 2000);
-        }
-    </script>
-</body>
-</html>
+        msg.textContent = '✓ Password changed successfully.';
+        msg.className = 'settings-message success';
+        msg.classList.remove('hidden');
+        document.getElementById('currentPw').value = '';
+        document.getElementById('newPw').value = '';
+        document.getElementById('confirmPw').value = '';
+        setTimeout(() => msg.classList.add('hidden'), 3000);
+    }
+
+    function resetNotifs() {
+        document.querySelectorAll('#tab-notifications .settings-toggle').forEach((t, i) => {
+            t.classList.toggle('active', i !== 3);
+        });
+    }
+
+    function saveNotifs() {
+        const btn = document.querySelector('#tab-notifications .settings-btn-save');
+        btn.textContent = '✓ Saved!';
+        btn.classList.add('saved');
+        setTimeout(() => {
+            btn.textContent = 'Save Changes';
+            btn.classList.remove('saved');
+        }, 2000);
+    }
+</script>
+
+@include('joborder.joborder-chatbot')
+
+@endsection

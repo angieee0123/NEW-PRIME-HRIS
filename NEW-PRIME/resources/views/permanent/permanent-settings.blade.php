@@ -60,7 +60,7 @@ body { background: #f8f7fc; min-height: 100vh; }
 .settings-btn-primary { padding: 10px 20px; border-radius: 9px; border: none; background: #8e1e18; font-size: 13px; font-weight: 600; color: #fff; cursor: pointer; display: flex; align-items: center; gap: 8px; font-family: 'Poppins', sans-serif; }
 .notif-readonly { background: #f7f6ff; padding: 5px 12px; border-radius: 7px; font-size: 13px; font-weight: 600; color: #5a5888; }
 .hidden { display: none; }
-.mobile-menu-btn { display: none; position: fixed; top: 20px; left: 20px; z-index: 101; width: 44px; height: 44px; border-radius: 12px; background: #fff; border: 1.5px solid #e5e4f0; cursor: pointer; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+.mobile-menu-btn { display: none; position: fixed; top: 20px; left: 20px; z-index: 101; width: 44px; height: 44px; border-radius: 12px; background: #0b044d; border: none; cursor: pointer; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(11,4,77,0.25); color: #fff; }
 .mobile-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(11,4,77,0.4); backdrop-filter: blur(2px); z-index: 99; }
 .mobile-overlay.active { display: block; }
 @media (max-width: 768px) { .mobile-menu-btn { display: flex; } .sidebar { transform: translateX(-100%); } .sidebar.mobile-open { transform: translateX(0); } .main-content { margin-left: 0 !important; } .settings-container { flex-direction: column; } .settings-sidebar { width: 100%; } }

@@ -7,100 +7,55 @@
         <div class="notif-head">
             <div>
                 <h3>Notifications</h3>
-                <p>You have <span id="unreadCount">3</span> unread message</p>
+                <p>You have <span id="unreadCount">2</span> unread message</p>
             </div>
             <button class="notif-clear" onclick="clearAll()">
                 <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
             </button>
         </div>
         <div class="notif-body" id="notifBody">
-            <div class="notif-card new" onclick="goToPage('/permanent/leave')">
+            <div class="notif-card new" onclick="goToPage('/joborder/attendance')">
                 <div class="notif-left">
-                    <div class="notif-avatar" style="background:linear-gradient(135deg,#15803d,#22c55e)">
-                        <svg width="16" height="16" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                    <div class="notif-avatar" style="background:linear-gradient(135deg,#d9bb00,#f59e0b)">
+                        <svg width="16" height="16" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                     </div>
                 </div>
                 <div class="notif-right">
-                    <h4>Leave Request Approved</h4>
-                    <p class="notif-msg">Your vacation leave request for 3 days has been approved by HR</p>
-                    <span class="notif-time">
-                        <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                        5 minutes ago
-                    </span>
-                </div>
-            </div>
-            <div class="notif-card new" onclick="goToPage('/permanent/payroll')">
-                <div class="notif-left">
-                    <div class="notif-avatar" style="background:linear-gradient(135deg,#0369a1,#0ea5e9)">
-                        <svg width="16" height="16" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                    </div>
-                </div>
-                <div class="notif-right">
-                    <h4>Payslip Available</h4>
-                    <p class="notif-msg">Your payslip for December 2024 is now available for download</p>
-                    <span class="notif-time">
-                        <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                        15 minutes ago
-                    </span>
-                </div>
-            </div>
-            <div class="notif-card new" onclick="goToPage('/permanent/performance')">
-                <div class="notif-left">
-                    <div class="notif-avatar" style="background:linear-gradient(135deg,#7c3aed,#a78bfa)">
-                        <svg width="16" height="16" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    </div>
-                </div>
-                <div class="notif-right">
-                    <h4>Performance Review Due</h4>
-                    <p class="notif-msg">Your quarterly performance review is due by Dec 31, 2024</p>
-                    <span class="notif-time">
-                        <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                        1 hour ago
-                    </span>
-                </div>
-            </div>
-            <div class="notif-card" onclick="goToPage('/permanent/training')">
-                <div class="notif-left">
-                    <div class="notif-avatar" style="background:linear-gradient(135deg,#ea580c,#fb923c)">
-                        <svg width="16" height="16" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-                    </div>
-                </div>
-                <div class="notif-right">
-                    <h4>New Training Available</h4>
-                    <p class="notif-msg">Cybersecurity Awareness training has been assigned to you</p>
+                    <h4>DTR Reminder</h4>
+                    <p class="notif-msg">Please submit your daily time record for June 30, 2025</p>
                     <span class="notif-time">
                         <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                         2 hours ago
                     </span>
                 </div>
             </div>
-            <div class="notif-card" onclick="goToPage('/permanent/dashboard')">
+            <div class="notif-card new" onclick="goToPage('/joborder/payslip')">
                 <div class="notif-left">
-                    <div class="notif-avatar" style="background:linear-gradient(135deg,#ea580c,#fb923c)">
+                    <div class="notif-avatar" style="background:linear-gradient(135deg,#15803d,#22c55e)">
+                        <svg width="16" height="16" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                    </div>
+                </div>
+                <div class="notif-right">
+                    <h4>Payslip Available</h4>
+                    <p class="notif-msg">Your payslip for Jun 1–15, 2025 is now available</p>
+                    <span class="notif-time">
+                        <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        1 day ago
+                    </span>
+                </div>
+            </div>
+            <div class="notif-card" onclick="goToPage('/joborder/dashboard')">
+                <div class="notif-left">
+                    <div class="notif-avatar" style="background:linear-gradient(135deg,#0369a1,#0ea5e9)">
                         <svg width="16" height="16" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                     </div>
                 </div>
                 <div class="notif-right">
-                    <h4>System Update</h4>
-                    <p class="notif-msg">PRIME HRIS will undergo maintenance on Dec 25, 2024 from 2:00 AM - 4:00 AM</p>
+                    <h4>Contract Reminder</h4>
+                    <p class="notif-msg">Your contract will expire on Dec 31, 2025. Please coordinate with HR</p>
                     <span class="notif-time">
                         <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                        3 hours ago
-                    </span>
-                </div>
-            </div>
-            <div class="notif-card" onclick="goToPage('/permanent/attendance')">
-                <div class="notif-left">
-                    <div class="notif-avatar" style="background:linear-gradient(135deg,#b91c1c,#ef4444)">
-                        <svg width="16" height="16" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                    </div>
-                </div>
-                <div class="notif-right">
-                    <h4>Attendance Reminder</h4>
-                    <p class="notif-msg">Don't forget to log your time out before leaving today</p>
-                    <span class="notif-time">
-                        <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                        Yesterday
+                        2 days ago
                     </span>
                 </div>
             </div>

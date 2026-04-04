@@ -146,9 +146,20 @@
 .notif-action-btn:hover { border-color: #0b044d; color: #0b044d; background: #f7f6ff; }
 .notif-action-btn.primary { background: #0b044d; color: #fff; border-color: #0b044d; }
 .notif-action-btn.primary:hover { background: #1a0f6e; }
-.notif-empty { padding: 60px 24px; text-align: center; }
-.notif-empty svg { width: 48px; height: 48px; color: #d9d9ee; margin-bottom: 12px; }
-.notif-empty p { font-size: 13px; color: #9999bb; margin: 0; }
+.notif-empty { padding: 40px 24px; text-align: center; display: flex; flex-direction: column; align-items: center; }
+.notif-empty svg { width: 40px; height: 40px; stroke: #d9d9ee; margin-bottom: 10px; display: block; }
+.notif-empty p { font-size: 12px; color: #9999bb; margin: 0; }
+@media (max-width: 480px) {
+    .notif-wrap { top: 12px; right: 12px; }
+    .notif-panel { position: fixed; top: 68px; right: 12px; left: 12px; width: auto; border-radius: 14px; max-height: calc(100vh - 90px); }
+    .notif-body { max-height: calc(100vh - 200px); }
+    .notif-head { padding: 16px; }
+    .notif-card { padding: 12px; gap: 10px; }
+    .notif-avatar { width: 38px; height: 38px; }
+    .notif-top h4 { font-size: 13px; }
+    .notif-msg { font-size: 12px; margin-bottom: 8px; }
+    .notif-action-btn { padding: 5px 10px; font-size: 11px; }
+}
 </style>
 
 <script>
@@ -163,7 +174,7 @@ function goToPage(url) {
 
 function clearAll() {
     const body = document.getElementById('notifBody');
-    body.innerHTML = '<div class="notif-empty"><svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><p>No notifications</p></div>';
+    body.innerHTML = '<div class="notif-empty"><svg width="40" height="40" fill="none" stroke="#d9d9ee" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><p>No notifications</p></div>';
     updateCount();
 }
 

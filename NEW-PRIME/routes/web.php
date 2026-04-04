@@ -24,6 +24,34 @@ Route::get('/joborder/dashboard', function () {
     return view('joborder.joborder-dashboard');
 })->name('joborder.dashboard');
 
+Route::get('/joborder/payslip', function () {
+    return view('joborder.joborder-payslip');
+})->name('joborder.payslip');
+
+Route::get('/joborder/attendance', function () {
+    return view('joborder.joborder-attendance');
+})->name('joborder.attendance');
+
+Route::get('/joborder/training', function () {
+    return view('joborder.joborder-training');
+})->name('joborder.training');
+
+Route::get('/joborder/leave', function () {
+    return view('joborder.joborder-leave');
+})->name('joborder.leave');
+
+Route::get('/joborder/profile', function () {
+    return view('joborder.joborder-profile');
+})->name('joborder.profile');
+
+Route::get('/joborder/performance', function () {
+    return view('joborder.joborder-performance');
+})->name('joborder.performance');
+
+Route::get('/joborder/settings', function () {
+    return view('joborder.joborder-settings');
+})->name('joborder.settings');
+
 Route::get('/permanent/dashboard', function () {
     return view('permanent.permanent-dashboard');
 })->name('permanent.dashboard');
