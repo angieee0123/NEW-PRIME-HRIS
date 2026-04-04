@@ -2,6 +2,10 @@
 
 @section('title', 'Reports | Municipal Government of Pagsanjan')
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+@endpush
+
 @section('content')
 <div class="app-layout">
 
@@ -446,6 +450,8 @@
 </div>
 
     </main>
+
+    @include('admin.admin-chatbot')
 
 </div>
 

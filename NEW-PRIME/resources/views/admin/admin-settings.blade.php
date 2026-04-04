@@ -2,6 +2,10 @@
 
 @section('title', 'Settings | Municipal Government of Pagsanjan')
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+@endpush
+
 @section('content')
 <div class="app-layout">
 
@@ -578,6 +582,8 @@ function rejectRequest(id) {
 }
 </script>
     </main>
+
+    @include('admin.admin-chatbot')
 
 </div>
 

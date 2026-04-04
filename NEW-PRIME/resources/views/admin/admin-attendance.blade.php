@@ -317,6 +317,8 @@
 
     </main>
 
+    @include('admin.admin-chatbot')
+
 </div>
 
 <div class="modal-overlay" id="view-modal" style="display: none;">

@@ -2,6 +2,10 @@
 
 @section('title', 'Leave & Benefits | Municipal Government of Pagsanjan')
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+@endpush
+
 @section('content')
 <div class="app-layout">
 
@@ -515,6 +519,8 @@ document.addEventListener('keydown', function(e) {
 .row-actions { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
 </style>
     </main>
+
+    @include('admin.admin-chatbot')
 
 </div>
 
