@@ -52,6 +52,8 @@
     {{-- Main Content --}}
     <main class="main-content">
 
+        @include('admin.admin-notification')
+
         @php
         $records = collect([
             ['id' => 'PGS-0041', 'name' => 'Maria B. Santos',     'position' => 'Administrative Officer IV',   'dept' => 'Office of the Mayor',              'present' => 22, 'absent' => 0, 'late' => 1, 'halfday' => 0, 'overtime' => 3.5, 'status' => 'Complete'],

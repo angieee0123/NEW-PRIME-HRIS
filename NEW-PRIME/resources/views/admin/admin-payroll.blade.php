@@ -26,6 +26,8 @@
     {{-- Main Content --}}
     <main class="main-content">
 
+        @include('admin.admin-notification')
+
         {{-- Welcome Banner --}}
         <div class="welcome-banner">
     <div class="banner-left">

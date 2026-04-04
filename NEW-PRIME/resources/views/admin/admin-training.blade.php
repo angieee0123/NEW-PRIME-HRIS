@@ -26,6 +26,8 @@
     {{-- Main Content --}}
     <main class="main-content">
 
+        @include('admin.admin-notification')
+
         @php
         $trainings = collect([
             ['id' => 'TRN-001', 'title' => 'Leadership Development Program', 'type' => 'Leadership', 'participants' => 25, 'capacity' => 30, 'status' => 'Ongoing', 'startDate' => 'Jun 15, 2025', 'endDate' => 'Jul 15, 2025', 'venue' => 'Municipal Hall Conference Room'],

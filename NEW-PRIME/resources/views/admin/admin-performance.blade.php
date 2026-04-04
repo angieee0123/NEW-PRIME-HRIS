@@ -26,6 +26,8 @@
     {{-- Main Content --}}
     <main class="main-content">
 
+        @include('admin.admin-notification')
+
         @php
         $performance = collect([
             ['id' => 'PGS-0041', 'name' => 'Maria B. Santos', 'position' => 'Administrative Officer IV', 'dept' => 'Office of the Mayor', 'period' => 'Jan-Jun 2025', 'rating' => 4.8, 'status' => 'Completed', 'evaluator' => 'Mayor Office', 'dueDate' => 'Jun 30, 2025'],

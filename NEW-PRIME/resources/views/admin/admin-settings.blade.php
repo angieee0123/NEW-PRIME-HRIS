@@ -25,6 +25,9 @@
 
     {{-- Main Content --}}
     <main class="main-content">
+
+        @include('admin.admin-notification')
+
 <style>
     :root { --primary: #0b044d; --accent: #15803d; }
     .settings-container { display: flex; gap: 20px; }

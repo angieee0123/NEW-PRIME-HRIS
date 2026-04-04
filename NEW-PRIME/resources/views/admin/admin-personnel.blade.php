@@ -26,6 +26,8 @@
     {{-- Main Content --}}
     <main class="main-content">
 
+        @include('admin.admin-notification')
+
         @php
         $personnel = collect([
             ['id' => 'PGS-0041', 'name' => 'Maria B. Santos',    'position' => 'Administrative Officer IV',   'dept' => 'Office of the Mayor',          'status' => 'Active',    'empType' => 'Permanent', 'dateHired' => 'Mar 12, 2015', 'gender' => 'Female', 'birthday' => 'Apr 5, 1982',  'contact' => '09171234567', 'email' => 'maria.santos@pagsanjan.gov.ph',   'gsis' => '1234567890', 'philhealth' => '12-345678901-2', 'pagibig' => '1234-5678-9012', 'tin' => '123-456-789'],
