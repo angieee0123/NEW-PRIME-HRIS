@@ -280,6 +280,112 @@
 
 </div>
     
+{{-- Fully Booked Modal --}}
+<div class="modal-overlay" id="fullyBookedModal" style="display:none" onclick="closeModal('fullyBookedModal')">
+    <div class="modal-box" style="max-width:400px" onclick="event.stopPropagation()">
+        <div class="modal-body" style="text-align:center;padding-top:28px;">
+            <div style="width:56px;height:56px;border-radius:50%;background:#fdf0ef;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;">
+                <svg width="28" height="28" fill="none" stroke="#8e1e18" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <h3 class="modal-title" style="margin-bottom:6px;">Training Fully Booked</h3>
+            <p style="font-size:13px;color:#6b6a8a;margin-bottom:18px;">Sorry, this training program has <strong>no available slots</strong>. Please check back later or choose another program.</p>
+            <div style="text-align:left;background:#fdf0ef;border-radius:12px;padding:14px 16px;border:1px solid #f5d0ce;">
+                <div class="modal-row" style="border-color:#f5d0ce"><span>Status</span><strong style="color:#8e1e18;">Fully Booked</strong></div>
+                <div class="modal-row" style="border:none"><span>Suggestion</span><strong>Try another program</strong></div>
+            </div>
+        </div>
+        <div class="modal-footer" style="justify-content:center;">
+            <button class="modal-btn-primary" style="width:100%;justify-content:center;" onclick="closeModal('fullyBookedModal')">Got It</button>
+        </div>
+    </div>
+</div>
+
+{{-- Certificate Download Modal --}}
+<div class="modal-overlay" id="certDownloadModal" style="display:none" onclick="closeModal('certDownloadModal')">
+    <div class="modal-box" style="max-width:400px" onclick="event.stopPropagation()">
+        <div class="modal-body" style="text-align:center;padding-top:28px;">
+            <div style="width:56px;height:56px;border-radius:50%;background:#e8f9ef;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;">
+                <svg width="28" height="28" fill="none" stroke="#15803d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            </div>
+            <h3 class="modal-title" style="margin-bottom:6px;">Certificate Downloaded!</h3>
+            <p style="font-size:13px;color:#6b6a8a;margin-bottom:18px;">Your certificate of completion has been successfully downloaded as a PDF file.</p>
+            <div style="text-align:left;background:#f7f6ff;border-radius:12px;padding:14px 16px;">
+                <div class="modal-row"><span>Certificate No.</span><strong id="cdCertNo">&mdash;</strong></div>
+                <div class="modal-row"><span>Format</span><strong>PDF Document</strong></div>
+                <div class="modal-row" style="border:none"><span>Downloaded</span><strong id="cdDate">&mdash;</strong></div>
+            </div>
+        </div>
+        <div class="modal-footer" style="justify-content:center;">
+            <button class="modal-btn-ghost" onclick="closeModal('certDownloadModal')" style="flex:1;justify-content:center;">Close</button>
+            <button class="modal-btn-primary" style="flex:1;justify-content:center;" onclick="closeModal('certDownloadModal')">
+                <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                Done
+            </button>
+        </div>
+    </div>
+</div>
+<div class="modal-overlay" id="enrollConfirmModal" style="display:none" onclick="closeModal('enrollConfirmModal')">
+    <div class="modal-box" style="max-width:420px" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <div class="pmodal-hero">
+                <div class="pmodal-hero-icon" style="background:linear-gradient(135deg,#0b044d,#1a0f6e)">
+                    <svg width="22" height="22" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg>
+                </div>
+                <div>
+                    <span class="modal-eyebrow">ENROLLMENT REQUEST</span>
+                    <h3 class="modal-title">Confirm Enrollment</h3>
+                    <p class="modal-sub">Please review the training details before confirming.</p>
+                </div>
+            </div>
+            <button class="modal-close" onclick="closeModal('enrollConfirmModal')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div style="background:#f7f6ff;border-radius:12px;padding:16px;margin-bottom:16px;">
+                <p style="font-size:10.5px;font-weight:700;color:#9999bb;letter-spacing:1px;margin:0 0 10px;">TRAINING DETAILS</p>
+                <div class="modal-row"><span>Program</span><strong id="ecTitle">—</strong></div>
+                <div class="modal-row"><span>Type</span><strong id="ecType">—</strong></div>
+                <div class="modal-row"><span>Start Date</span><strong id="ecStart">—</strong></div>
+                <div class="modal-row"><span>End Date</span><strong id="ecEnd">—</strong></div>
+                <div class="modal-row" style="border:none"><span>Venue</span><strong id="ecVenue">—</strong></div>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:#fefce8;border-radius:10px;border:1px solid #fde68a;">
+                <svg width="16" height="16" fill="none" stroke="#a16207" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                <p style="font-size:12.5px;color:#a16207;margin:0;line-height:1.5">Once submitted, your enrollment request will be reviewed by the HRMO. You will be notified upon approval.</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="modal-btn-ghost" onclick="closeModal('enrollConfirmModal')">Cancel</button>
+            <button class="modal-btn-primary" id="enrollConfirmBtn" onclick="submitEnrollment()">
+                <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg>
+                Confirm Enrollment
+            </button>
+        </div>
+    </div>
+</div>
+
+{{-- Enroll Success Modal --}}
+<div class="modal-overlay" id="enrollSuccessModal" style="display:none" onclick="closeModal('enrollSuccessModal')">
+    <div class="modal-box" style="max-width:400px" onclick="event.stopPropagation()">
+        <div class="modal-body" style="text-align:center;padding-top:28px;">
+            <div style="width:56px;height:56px;border-radius:50%;background:#e8f9ef;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;">
+                <svg width="28" height="28" fill="none" stroke="#15803d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <h3 class="modal-title" style="margin-bottom:6px;">Enrollment Submitted!</h3>
+            <p style="font-size:13px;color:#6b6a8a;margin-bottom:18px;">Your enrollment request for <strong id="esTitle">—</strong> has been submitted and is pending HRMO approval.</p>
+            <div style="text-align:left;background:#f7f6ff;border-radius:12px;padding:14px 16px;">
+                <div class="modal-row"><span>Reference No.</span><strong id="esRef">—</strong></div>
+                <div class="modal-row"><span>Status</span><strong style="color:#d9bb00;">Pending Approval</strong></div>
+                <div class="modal-row" style="border:none"><span>Submitted</span><strong id="esDate">—</strong></div>
+            </div>
+        </div>
+        <div class="modal-footer" style="justify-content:center;">
+            <button class="modal-btn-primary" style="width:100%;justify-content:center;" onclick="closeModal('enrollSuccessModal')">Done</button>
+        </div>
+    </div>
+</div>
+
 {{-- Training Modal --}}
 <div class="modal-overlay" id="trainingModal" style="display:none" onclick="closeModal('trainingModal')">
     <div class="modal-box" onclick="event.stopPropagation()">
@@ -443,17 +549,13 @@ table .type-badge.soft-skills { background:#fefce8; color:#a16207; }
             
             if (certificate) {
                 document.getElementById('modalAction').innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download Certificate';
-                document.getElementById('modalAction').onclick = function() { 
-                    alert('Downloading certificate: ' + certificate + '\n\nCertificate will be downloaded as PDF.');
-                    setTimeout(function() {
-                        alert('Certificate downloaded successfully!');
-                        closeModal('trainingModal');
-                    }, 500);
+                document.getElementById('modalAction').onclick = function() {
+                    closeModal('trainingModal');
+                    downloadCertificate(certificate);
                 };
             } else {
                 document.getElementById('modalAction').textContent = 'Continue Training';
-                document.getElementById('modalAction').onclick = function() { 
-                    alert('Redirecting to training module...');
+                document.getElementById('modalAction').onclick = function() {
                     closeModal('trainingModal');
                 };
             }
@@ -477,15 +579,11 @@ table .type-badge.soft-skills { background:#fefce8; color:#a16207; }
             document.getElementById('modalBody').innerHTML = '<div class="slots-card" style="background:' + (fillPct > 75 ? '#fef2f2' : '#f7f6ff') + ';"><div class="slots-icon" style="background:linear-gradient(135deg, ' + fillColor + ', ' + fillColor + 'dd);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div style="flex:1;"><p style="font-size:11px;color:#9999bb;font-weight:600;margin:0 0 4px;">AVAILABLE SLOTS</p><div style="display:flex;align-items:baseline;gap:4px;"><span style="font-size:28px;font-weight:800;color:' + fillColor + ';">' + slots + '</span><span style="font-size:16px;color:#9999bb;font-weight:600;">/ ' + capacity + '</span></div><div style="margin-top:8px;"><div style="height:6px;background:#e5e4f0;border-radius:99px;overflow:hidden;"><div style="height:100%;width:' + fillPct + '%;background:' + fillColor + ';border-radius:99px;"></div></div></div></div></div><div class="modal-section-label">SCHEDULE & DETAILS</div><div class="modal-row"><span>Start Date</span><strong>' + startDate + '</strong></div><div class="modal-row"><span>End Date</span><strong>' + endDate + '</strong></div><div class="modal-row"><span>Venue</span><strong>' + venue + '</strong></div><div class="modal-row"><span>Training Type</span><strong>' + type + '</strong></div>';
             
             document.getElementById('modalAction').innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg>Enroll Now';
-            document.getElementById('modalAction').onclick = function() { 
-                if(slots > 0) {
-                    const confirmEnroll = confirm('Do you want to enroll in this training?\n\n' + title + '\nStart: ' + startDate + '\nEnd: ' + endDate);
-                    if(confirmEnroll) {
-                        alert('Enrollment request submitted!\n\nYou will receive a confirmation email shortly.');
-                        closeModal('trainingModal');
-                    }
+            document.getElementById('modalAction').onclick = function() {
+                if (slots > 0) {
+                    openEnrollConfirm(null, title, type, startDate, endDate, venue);
                 } else {
-                    alert('Sorry, this training is fully booked.');
+                    showFullyBookedModal();
                 }
             };
             document.getElementById('modalAction').style.display = 'flex';
@@ -495,7 +593,8 @@ table .type-badge.soft-skills { background:#fefce8; color:#a16207; }
     
     function closeModal(id) {
         document.getElementById(id).style.display = 'none';
-        document.getElementById('modalStatus').style.display = 'inline-block';
+        const ms = document.getElementById('modalStatus');
+        if (ms) ms.style.display = 'inline-block';
     }
     
     document.addEventListener('keydown', function(e) {
@@ -504,21 +603,50 @@ table .type-badge.soft-skills { background:#fefce8; color:#a16207; }
         }
     });
     
+    function showFullyBookedModal() {
+        document.getElementById('fullyBookedModal').style.display = 'flex';
+    }
+
     function downloadCertificate(certNo) {
-        alert('Downloading certificate: ' + certNo + '\n\nCertificate will be downloaded as PDF.');
-        setTimeout(function() {
-            alert('Certificate downloaded successfully!');
-        }, 500);
+        const now = new Date().toLocaleDateString('en-PH', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+        document.getElementById('cdCertNo').textContent = certNo;
+        document.getElementById('cdDate').textContent   = now;
+        document.getElementById('certDownloadModal').style.display = 'flex';
     }
     
+    let _pendingEnroll = null;
+
     function enrollTraining(trainingId) {
-        const confirmEnroll = confirm('Do you want to enroll in this training program?\n\nTraining ID: ' + trainingId);
-        if(confirmEnroll) {
-            alert('Enrollment request submitted!\n\nYou will receive a confirmation email shortly.');
-            setTimeout(function() {
-                location.reload();
-            }, 1000);
-        }
+        // Find card data from the DOM
+        const card = document.querySelector('[onclick*="\'' + trainingId + '\'"]').closest('.training-card');
+        const title  = card.querySelector('.card-title').textContent;
+        const type   = card.querySelector('.type-badge').textContent.trim();
+        const start  = card.querySelector('.card-footer p:last-child').textContent;
+        const venue  = card.querySelector('.card-venue').textContent.trim();
+        openEnrollConfirm(trainingId, title, type, start, '—', venue);
+    }
+
+    function openEnrollConfirm(id, title, type, start, end, venue) {
+        _pendingEnroll = { id, title };
+        document.getElementById('ecTitle').textContent  = title;
+        document.getElementById('ecType').textContent   = type;
+        document.getElementById('ecStart').textContent  = start;
+        document.getElementById('ecEnd').textContent    = end !== '—' ? end : start;
+        document.getElementById('ecVenue').textContent  = venue;
+        document.getElementById('enrollConfirmModal').style.display = 'flex';
+    }
+
+    function submitEnrollment() {
+        if (!_pendingEnroll) return;
+        const ref  = 'ENR-' + new Date().getFullYear() + '-' + String(Math.floor(Math.random() * 9000) + 1000);
+        const now  = new Date().toLocaleDateString('en-PH', { month: 'short', day: 'numeric', year: 'numeric' });
+        document.getElementById('esTitle').textContent = _pendingEnroll.title;
+        document.getElementById('esRef').textContent   = ref;
+        document.getElementById('esDate').textContent  = now;
+        closeModal('enrollConfirmModal');
+        closeModal('trainingModal');
+        document.getElementById('enrollSuccessModal').style.display = 'flex';
+        _pendingEnroll = null;
     }
 </script>
 

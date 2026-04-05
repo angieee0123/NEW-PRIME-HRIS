@@ -316,6 +316,29 @@
             </div>
         </div>
     </div>
+{{-- Save Success Modal --}}
+<div class="modal-overlay" id="saveSuccessModal" onclick="closeSaveSuccess()">
+    <div class="modal-box" style="max-width:400px" onclick="event.stopPropagation()">
+        <div class="modal-body" style="text-align:center;padding:32px 24px 20px;">
+            <div style="width:56px;height:56px;border-radius:50%;background:#e8f9ef;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+                <svg width="28" height="28" fill="none" stroke="#15803d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <h3 class="modal-title" style="margin-bottom:6px;">Profile Updated!</h3>
+            <p style="font-size:13px;color:#6b6a8a;margin-bottom:20px;">Your profile information has been saved successfully.</p>
+            <div style="text-align:left;background:#f7f6ff;border-radius:12px;padding:14px 16px;">
+                <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f0effe;font-size:13px;"><span style="color:#6b6a8a;font-weight:600;">Updated by</span><strong style="color:#0b044d;">Ana R. Reyes</strong></div>
+                <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f0effe;font-size:13px;"><span style="color:#6b6a8a;font-weight:600;">Section</span><strong style="color:#0b044d;">Contact &amp; Emergency</strong></div>
+                <div style="display:flex;justify-content:space-between;padding:7px 0;font-size:13px;"><span style="color:#6b6a8a;font-weight:600;">Date &amp; Time</span><strong id="saveTimestamp" style="color:#0b044d;">—</strong></div>
+            </div>
+        </div>
+        <div class="modal-footer" style="justify-content:center;padding-top:0;">
+            <button class="modal-btn-primary" style="width:100%;justify-content:center;" onclick="closeSaveSuccess()">
+                <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                Done
+            </button>
+        </div>
+    </div>
+</div>
 <script>
     const sidebar      = document.getElementById('sidebar');
     const toggleBtn    = document.getElementById('toggle-btn');
@@ -370,8 +393,23 @@
     }
     
     function saveProfile() {
-            alert('Profile updated successfully!');
-            closeEditModal();
+        const now = new Date().toLocaleDateString('en-PH', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+        // Update displayed values in the profile view
+        document.querySelector('#tab-personal .pmodal-field:nth-child(4) strong').textContent = document.getElementById('contact').value;
+        document.querySelector('#tab-personal .pmodal-field:nth-child(5) strong').textContent = document.getElementById('email').value;
+        document.querySelector('#tab-personal .pmodal-field:nth-child(6) strong').textContent = document.getElementById('address').value;
+        document.querySelector('#tab-emergency .pmodal-field:nth-child(1) strong').textContent = document.getElementById('emergencyContact').value;
+        document.querySelector('#tab-emergency .pmodal-field:nth-child(2) strong').textContent = document.getElementById('emergencyRelation').value;
+        document.querySelector('#tab-emergency .pmodal-field:nth-child(3) strong').textContent = document.getElementById('emergencyPhone').value;
+
+        document.getElementById('saveTimestamp').textContent = now;
+        closeEditModal();
+        document.getElementById('saveSuccessModal').classList.add('show');
+    }
+
+    function closeSaveSuccess() {
+        document.getElementById('saveSuccessModal').classList.remove('show');
     }
     
     document.addEventListener('keydown', function(e) {

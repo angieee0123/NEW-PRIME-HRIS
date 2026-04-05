@@ -152,24 +152,24 @@ body { background: #f8f7fc; min-height: 100vh; }
                                 <div class="settings-form-grid">
                                     <div class="settings-form-field">
                                         <label>First Name</label>
-                                        <input type="text" value="Ana">
+                                        <input type="text" id="firstName" value="Ana">
                                     </div>
                                     <div class="settings-form-field">
                                         <label>Last Name</label>
-                                        <input type="text" value="R. Reyes">
+                                        <input type="text" id="lastName" value="R. Reyes">
                                     </div>
                                     <div class="settings-form-field">
                                         <label>Email Address</label>
-                                        <input type="email" value="ana.reyes@pagsanjan.gov.ph">
+                                        <input type="email" id="emailAddr" value="ana.reyes@pagsanjan.gov.ph">
                                     </div>
                                     <div class="settings-form-field">
                                         <label>Contact No.</label>
-                                        <input type="text" value="09201122334">
+                                        <input type="text" id="contactNo" value="09201122334">
                                     </div>
                                 </div>
                                 <div class="settings-save-bar">
-                                    <button class="settings-btn-reset">Reset</button>
-                                    <button class="settings-btn-save">Save Changes</button>
+                                    <button class="settings-btn-reset" onclick="resetProfile()">Reset</button>
+                                    <button class="settings-btn-save" onclick="saveSettings('profile')">Save Changes</button>
                                 </div>
                             </div>
                         </div>
@@ -224,17 +224,17 @@ body { background: #f8f7fc; min-height: 100vh; }
                             <div class="settings-form-wrapper">
                                 <div class="settings-form-field" style="margin-bottom:12px;">
                                     <label>Current Password</label>
-                                    <input type="password" placeholder="••••••••">
+                                    <input type="password" id="currentPw" placeholder="••••••••">
                                 </div>
                                 <div class="settings-form-field" style="margin-bottom:12px;">
                                     <label>New Password</label>
-                                    <input type="password" placeholder="••••••••">
+                                    <input type="password" id="newPw" placeholder="••••••••">
                                 </div>
                                 <div class="settings-form-field" style="margin-bottom:16px;">
                                     <label>Confirm New Password</label>
-                                    <input type="password" placeholder="••••••••">
+                                    <input type="password" id="confirmPw" placeholder="••••••••">
                                 </div>
-                                <p class="settings-message success hidden" id="pwMsg"></p>
+                                <p class="settings-message error hidden" id="pwMsg"></p>
                                 <button class="settings-btn-primary" onclick="changePassword()">
                                     Change Password
                                 </button>
@@ -327,8 +327,8 @@ body { background: #f8f7fc; min-height: 100vh; }
                             </div>
                             <div class="settings-form-wrapper">
                                 <div class="settings-save-bar">
-                                    <button class="settings-btn-reset">Reset</button>
-                                    <button class="settings-btn-save">Save Changes</button>
+                                    <button class="settings-btn-reset" onclick="resetNotifications()">Reset</button>
+                                    <button class="settings-btn-save" onclick="saveSettings('notifications')">Save Changes</button>
                                 </div>
                             </div>
                         </div>
@@ -383,19 +383,101 @@ body { background: #f8f7fc; min-height: 100vh; }
         document.querySelectorAll('#tab-profile, #tab-security, #tab-notifications').forEach(t => t.classList.add('hidden'));
         document.getElementById('tab-' + tabId).classList.remove('hidden');
     }
-    
+
     function toggleSetting(btn) {
         btn.classList.toggle('active');
     }
-    
-    function changePassword() {
-        const msg = document.getElementById('pwMsg');
-        msg.textContent = '✓ Password changed successfully.';
-        msg.classList.remove('hidden');
-        setTimeout(() => msg.classList.add('hidden'), 3000);
+
+    const profileDefaults = { firstName: 'Ana', lastName: 'R. Reyes', emailAddr: 'ana.reyes@pagsanjan.gov.ph', contactNo: '09201122334' };
+
+    function saveSettings(section) {
+        const labels = { profile: 'Personal Information', notifications: 'Notification Preferences', password: 'Password' };
+        const now = new Date().toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit', hour12: true }) +
+                    ', ' + new Date().toLocaleDateString('en-PH', { month: 'short', day: 'numeric', year: 'numeric' });
+        document.getElementById('savedSection').textContent = labels[section] || section;
+        document.getElementById('savedTime').textContent = now;
+        document.getElementById('savedTitle').textContent = 'Settings Saved!';
+        document.getElementById('savedMsg').textContent = 'Your ' + (labels[section] || section).toLowerCase() + ' settings have been saved successfully.';
+        document.getElementById('savedIcon').style.background = '#e8f9ef';
+        document.getElementById('savedIcon').innerHTML = '<svg width="28" height="28" fill="none" stroke="#15803d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
+        const modal = document.getElementById('settingsSavedModal');
+        modal.style.opacity = '1'; modal.style.visibility = 'visible';
+        document.getElementById('settingsSavedBox').style.transform = 'translateY(0)';
     }
+
+    function closeSavedModal() {
+        const modal = document.getElementById('settingsSavedModal');
+        modal.style.opacity = '0'; modal.style.visibility = 'hidden';
+        document.getElementById('settingsSavedBox').style.transform = 'translateY(16px)';
+    }
+
+    function resetProfile() {
+        Object.entries(profileDefaults).forEach(([id, val]) => {
+            const el = document.getElementById(id);
+            if (el) el.value = val;
+        });
+    }
+
+    function resetNotifications() {
+        document.querySelectorAll('#tab-notifications .settings-toggle').forEach((t, i) => {
+            if (i < 3) t.classList.add('active'); else t.classList.remove('active');
+        });
+    }
+
+    function changePassword() {
+        const current = document.getElementById('currentPw').value;
+        const newPw   = document.getElementById('newPw').value;
+        const confirm = document.getElementById('confirmPw').value;
+        const msg     = document.getElementById('pwMsg');
+
+        if (!current || !newPw || !confirm) {
+            msg.textContent = 'Please fill in all password fields.';
+            msg.className = 'settings-message error';
+            return;
+        }
+        if (newPw.length < 8) {
+            msg.textContent = 'New password must be at least 8 characters.';
+            msg.className = 'settings-message error';
+            return;
+        }
+        if (newPw !== confirm) {
+            msg.textContent = 'New password and confirmation do not match.';
+            msg.className = 'settings-message error';
+            return;
+        }
+        msg.classList.add('hidden');
+        document.getElementById('currentPw').value = '';
+        document.getElementById('newPw').value = '';
+        document.getElementById('confirmPw').value = '';
+        saveSettings('password');
+    }
+
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSavedModal(); });
 </script>
 
 @include('permanent.permanent-chatbot')
+
+{{-- Settings Save Success Modal --}}
+<div class="modal-overlay" id="settingsSavedModal" onclick="closeSavedModal()" style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(11,4,77,0.55);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:1000;opacity:0;visibility:hidden;transition:all 0.2s;padding:20px;">
+    <div style="background:#fff;border-radius:16px;width:100%;max-width:400px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);transform:translateY(16px);transition:transform 0.2s;" onclick="event.stopPropagation()" id="settingsSavedBox">
+        <div style="text-align:center;padding:32px 24px 20px;">
+            <div id="savedIcon" style="width:56px;height:56px;border-radius:50%;background:#e8f9ef;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+                <svg width="28" height="28" fill="none" stroke="#15803d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <h3 id="savedTitle" style="font-size:18px;font-weight:700;color:#0b044d;margin-bottom:6px;">Settings Saved!</h3>
+            <p id="savedMsg" style="font-size:13px;color:#6b6a8a;margin-bottom:20px;">Your changes have been saved successfully.</p>
+            <div style="text-align:left;background:#f7f6ff;border-radius:12px;padding:14px 16px;">
+                <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f0effe;font-size:13px;"><span style="color:#6b6a8a;font-weight:600;">Section</span><strong id="savedSection" style="color:#0b044d;">Profile</strong></div>
+                <div style="display:flex;justify-content:space-between;padding:7px 0;font-size:13px;"><span style="color:#6b6a8a;font-weight:600;">Saved at</span><strong id="savedTime" style="color:#0b044d;">—</strong></div>
+            </div>
+        </div>
+        <div style="display:flex;justify-content:center;padding:0 24px 24px;">
+            <button onclick="closeSavedModal()" style="width:100%;padding:10px 20px;border-radius:9px;border:none;background:#8e1e18;font-size:13px;font-weight:600;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Poppins',sans-serif;">
+                <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                Done
+            </button>
+        </div>
+    </div>
+</div>
 
 @endsection

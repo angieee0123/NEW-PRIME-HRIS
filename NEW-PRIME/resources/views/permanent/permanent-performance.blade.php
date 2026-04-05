@@ -101,7 +101,9 @@
         .modal-footer { display: flex; justify-content: space-between; padding: 16px 24px; border-top: 1px solid #e5e4f0; }
         .modal-btn-ghost { padding: 10px 20px; border-radius: 9px; border: 1.5px solid #e5e4f0; background: #fff; font-size: 13px; font-weight: 600; color: #6b6a8a; cursor: pointer; }
         .modal-btn-primary { padding: 10px 20px; border-radius: 9px; border: none; background: linear-gradient(135deg,#0b044d,#1a0f6e); font-size: 13px; font-weight: 600; color: #fff; cursor: pointer; display: flex; align-items: center; gap: 8px; }
-        .hidden { display: none; }
+        .row-actions { display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+        .btn-download { padding:7px 14px; border-radius:8px; border:none; background:linear-gradient(135deg,#0b044d,#1a0f6e); font-size:12px; font-weight:600; color:#fff; cursor:pointer; display:inline-flex; align-items:center; gap:5px; }
+        .btn-download:hover { opacity:0.9; }
         
         /* Mobile Responsive Styles */
         @media (max-width: 768px) {
@@ -161,7 +163,8 @@
             .table-sub { font-size: 11px; }
             
             .btn-view, .btn-edit { font-size: 11px; padding: 6px 10px; }
-            
+            .row-actions { flex-direction:column; gap:4px; }
+            .btn-view, .btn-download { width:100%; justify-content:center; font-size:11px; padding:6px 10px; }
             .modal-btn-ghost, .modal-btn-primary { width: 100%; }
         }
 </style>
@@ -483,8 +486,13 @@
                                 </td>
                                 <td><span class="badge-status on-hold">Completed</span></td>
                                 <td>
-                                    <button class="btn-view" onclick="openEvaluation('EVAL-2025-01', 'Jan-Jun 2025', 4.8, 'Jun 28, 2025', 'Mayor Office', 'Excellent performance and leadership skills demonstrated. Shows strong commitment to professional development and training completion.', ['Leadership', 'Communication', 'Problem Solving', 'Training Completion'], ['Time Management'])">View</button>
-                                    <button class="btn-edit" style="margin-left:4px;">Download</button>
+                                    <div class="row-actions">
+                                        <button class="btn-view" onclick="openEvaluation('EVAL-2025-01', 'Jan-Jun 2025', 4.8, 'Jun 28, 2025', 'Mayor Office', 'Excellent performance and leadership skills demonstrated. Shows strong commitment to professional development and training completion.', ['Leadership', 'Communication', 'Problem Solving', 'Training Completion'], ['Time Management'])">View</button>
+                                        <button class="btn-download">
+                                            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                            Download
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                             <tr>
@@ -499,7 +507,15 @@
                                     </div>
                                 </td>
                                 <td><span class="badge-status on-hold">Completed</span></td>
-                                <td><button class="btn-view">View</button><button class="btn-edit" style="margin-left:4px;">Download</button></td>
+                                <td>
+                                    <div class="row-actions">
+                                        <button class="btn-view" onclick="openEvaluation('EVAL-2024-02', 'Jul-Dec 2024', 4.7, 'Dec 20, 2024', 'Mayor Office', 'Consistently high performance with excellent patient care and teamwork.', ['Teamwork', 'Patient Care', 'Punctuality'], ['Documentation'])">View</button>
+                                        <button class="btn-download">
+                                            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                            Download
+                                        </button>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
                                 <td style="font-size:12.5px;color:#6b6a8a;font-weight:500;">EVAL-2024-01</td>
@@ -513,7 +529,15 @@
                                     </div>
                                 </td>
                                 <td><span class="badge-status on-hold">Completed</span></td>
-                                <td><button class="btn-view">View</button><button class="btn-edit" style="margin-left:4px;">Download</button></td>
+                                <td>
+                                    <div class="row-actions">
+                                        <button class="btn-view" onclick="openEvaluation('EVAL-2024-01', 'Jan-Jun 2024', 4.6, 'Jun 25, 2024', 'Mayor Office', 'Good performance with notable improvement in clinical skills and communication.', ['Clinical Skills', 'Communication', 'Initiative'], ['Time Management'])">View</button>
+                                        <button class="btn-download">
+                                            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                            Download
+                                        </button>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
                                 <td style="font-size:12.5px;color:#6b6a8a;font-weight:500;">EVAL-2023-02</td>
@@ -527,7 +551,15 @@
                                     </div>
                                 </td>
                                 <td><span class="badge-status on-hold">Completed</span></td>
-                                <td><button class="btn-view">View</button><button class="btn-edit" style="margin-left:4px;">Download</button></td>
+                                <td>
+                                    <div class="row-actions">
+                                        <button class="btn-view" onclick="openEvaluation('EVAL-2023-02', 'Jul-Dec 2023', 4.5, 'Dec 18, 2023', 'Mayor Office', 'Solid performance with consistent dedication to duties and patient welfare.', ['Dedication', 'Patient Care', 'Reliability'], ['Leadership Skills'])">View</button>
+                                        <button class="btn-download">
+                                            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                            Download
+                                        </button>
+                                    </div>
+                                </td>
                             </tr>
                         </tbody>
                     </table>

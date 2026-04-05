@@ -499,14 +499,60 @@ const reportTitles = {
     performance: 'Performance Report — Jan-Jun 2025'
 };
 
+const allReports = ['payroll', 'department', 'deductions', 'headcount', 'recruitment', 'training', 'performance'];
+let currentReport = 'payroll';
+
+// Reports that use semi/month/year filters
+const payrollReports = ['payroll', 'department', 'deductions', 'headcount'];
+
 function setActiveReport(reportId) {
     document.querySelectorAll('.report-tab').forEach(tab => tab.classList.remove('active'));
     event.target.closest('.report-tab').classList.add('active');
     document.getElementById('reportTitle').textContent = reportTitles[reportId];
-    
-    ['payroll', 'department', 'deductions', 'headcount', 'recruitment', 'training', 'performance'].forEach(r => {
+    currentReport = reportId;
+
+    allReports.forEach(r => {
         document.getElementById(r + 'Report').style.display = r === reportId ? 'block' : 'none';
     });
+
+    // Show/hide period filters based on report type
+    const showPeriod = payrollReports.includes(reportId);
+    document.getElementById('semiFilter').style.display = showPeriod ? '' : 'none';
+    document.getElementById('monthFilter').style.display = showPeriod ? '' : 'none';
+
+    // Reset search and re-apply
+    document.getElementById('searchInput').value = '';
+    applyFilters();
 }
+
+function applyFilters() {
+    const search = document.getElementById('searchInput').value.toLowerCase().trim();
+    const activeSection = document.getElementById(currentReport + 'Report');
+    if (!activeSection) return;
+
+    const rows = activeSection.querySelectorAll('tbody tr');
+    let visible = 0;
+    rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        const match = !search || text.includes(search);
+        row.style.display = match ? '' : 'none';
+        if (match) visible++;
+    });
+
+    // Update subtitle with visible count
+    const sub = activeSection.querySelector('.table-sub');
+    if (sub) {
+        const total = rows.length;
+        sub.textContent = visible === total
+            ? sub.textContent.replace(/^\d+/, total)
+            : visible + ' of ' + total + ' records shown';
+    }
+}
+
+// Wire up all filter inputs
+document.getElementById('searchInput').addEventListener('input', applyFilters);
+document.getElementById('semiFilter').addEventListener('change', applyFilters);
+document.getElementById('monthFilter').addEventListener('change', applyFilters);
+document.getElementById('yearFilter').addEventListener('change', applyFilters);
 </script>
 @endsection

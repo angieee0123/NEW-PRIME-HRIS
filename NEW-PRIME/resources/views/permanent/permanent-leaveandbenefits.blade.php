@@ -111,15 +111,15 @@
                             <p class="table-sub">6 of 6 records</p>
                         </div>
                         <div class="table-actions">
-                            <select class="filter-select">
-                                <option>All Types</option>
+                            <select class="filter-select" id="filterType" onchange="applyLeaveFilters()">
+                                <option value="">All Types</option>
                                 <option>Vacation Leave</option>
                                 <option>Sick Leave</option>
                                 <option>Emergency Leave</option>
                                 <option>Special Leave</option>
                             </select>
-                            <select class="filter-select">
-                                <option>All Status</option>
+                            <select class="filter-select" id="filterStatus" onchange="applyLeaveFilters()">
+                                <option value="">All Status</option>
                                 <option>Approved</option>
                                 <option>Pending</option>
                                 <option>Rejected</option>
@@ -143,7 +143,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
+                                <tr data-type="Sick Leave" data-status="Approved">
                                     <td style="font-size:12;color:#9999bb;font-weight:500;">LV-2025-002</td>
                                     <td style="font-weight:600;">Sick Leave</td>
                                     <td>Jun 15, 2025</td>
@@ -153,7 +153,7 @@
                                     <td><span class="badge-status processed">Approved</span></td>
                                     <td><button class="btn-view" onclick="openDetailModal('Sick Leave', 'Jun 15, 2025', 'Jun 16, 2025', 2, 'Medical consultation', 'Approved')">View</button></td>
                                 </tr>
-                                <tr>
+                                <tr data-type="Vacation Leave" data-status="Approved">
                                     <td style="font-size:12;color:#9999bb;font-weight:500;">LV-2025-007</td>
                                     <td style="font-weight:600;">Vacation Leave</td>
                                     <td>Jun 10, 2025</td>
@@ -163,7 +163,7 @@
                                     <td><span class="badge-status processed">Approved</span></td>
                                     <td><button class="btn-view" onclick="openDetailModal('Vacation Leave', 'Jun 10, 2025', 'Jun 11, 2025', 2, 'Rest and recreation', 'Approved')">View</button></td>
                                 </tr>
-                                <tr>
+                                <tr data-type="Emergency Leave" data-status="Approved">
                                     <td style="font-size:12;color:#9999bb;font-weight:500;">LV-2025-010</td>
                                     <td style="font-weight:600;">Emergency Leave</td>
                                     <td>May 22, 2025</td>
@@ -173,7 +173,7 @@
                                     <td><span class="badge-status processed">Approved</span></td>
                                     <td><button class="btn-view" onclick="openDetailModal('Emergency Leave', 'May 22, 2025', 'May 22, 2025', 1, 'Family emergency', 'Approved')">View</button></td>
                                 </tr>
-                                <tr>
+                                <tr data-type="Sick Leave" data-status="Approved">
                                     <td style="font-size:12;color:#9999bb;font-weight:500;">LV-2025-013</td>
                                     <td style="font-weight:600;">Sick Leave</td>
                                     <td>May 5, 2025</td>
@@ -183,7 +183,7 @@
                                     <td><span class="badge-status processed">Approved</span></td>
                                     <td><button class="btn-view" onclick="openDetailModal('Sick Leave', 'May 5, 2025', 'May 6, 2025', 2, 'Flu and fever', 'Approved')">View</button></td>
                                 </tr>
-                                <tr>
+                                <tr data-type="Vacation Leave" data-status="Approved">
                                     <td style="font-size:12;color:#9999bb;font-weight:500;">LV-2025-018</td>
                                     <td style="font-weight:600;">Vacation Leave</td>
                                     <td>Apr 14, 2025</td>
@@ -193,7 +193,7 @@
                                     <td><span class="badge-status processed">Approved</span></td>
                                     <td><button class="btn-view" onclick="openDetailModal('Vacation Leave', 'Apr 14, 2025', 'Apr 16, 2025', 3, 'Family vacation', 'Approved')">View</button></td>
                                 </tr>
-                                <tr>
+                                <tr data-type="Vacation Leave" data-status="Pending">
                                     <td style="font-size:12;color:#9999bb;font-weight:500;">LV-2025-021</td>
                                     <td style="font-weight:600;">Vacation Leave</td>
                                     <td>Jul 7, 2025</td>
@@ -208,7 +208,7 @@
                     </div>
                     
                 <div class="table-footer">
-                    <span>Showing <strong>6</strong> of <strong>6</strong> records</span>
+                    <span id="leaveCount">Showing <strong>6</strong> of <strong>6</strong> records</span>
                 </div>
             </section>
         </div>
@@ -614,6 +614,25 @@
             sidebar.classList.remove('mobile-open');
             overlay.classList.remove('active');
         });
+    }
+
+    function applyLeaveFilters() {
+        const type   = document.getElementById('filterType').value;
+        const status = document.getElementById('filterStatus').value;
+        const rows   = document.querySelectorAll('#tab-leave tbody tr');
+        let visible  = 0;
+        rows.forEach(row => {
+            const matchType   = !type   || row.dataset.type   === type;
+            const matchStatus = !status || row.dataset.status === status;
+            const show = matchType && matchStatus;
+            row.style.display = show ? '' : 'none';
+            if (show) visible++;
+        });
+        const total = rows.length;
+        document.getElementById('leaveCount').innerHTML =
+            visible === total
+                ? 'Showing <strong>' + total + '</strong> of <strong>' + total + '</strong> records'
+                : 'Showing <strong>' + visible + '</strong> of <strong>' + total + '</strong> records';
     }
 
     function switchTab(tabId, btn) {

@@ -259,7 +259,7 @@
         </div>
         <div class="modal-footer">
             <button class="modal-btn-ghost" onclick="closeModal('dtrModal')">Close</button>
-            <button class="modal-btn-primary">
+            <button class="modal-btn-primary" onclick="downloadDTR()">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                 Download DTR
             </button>
@@ -267,8 +267,33 @@
     </div>
 </div>
 
-<style>
-.modal-overlay { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(11,4,77,0.6); backdrop-filter:blur(4px); display:flex; align-items:center; justify-content:center; z-index:1000; padding:20px; }
+{{-- DTR Download Success Modal --}}
+<div class="modal-overlay" id="dtrDownloadModal" style="display:none" onclick="closeModal('dtrDownloadModal')">
+    <div class="modal-box" style="max-width:400px" onclick="event.stopPropagation()">
+        <div class="modal-body" style="text-align:center;padding:32px 24px 20px;">
+            <div style="width:56px;height:56px;border-radius:50%;background:#e8f9ef;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+                <svg width="28" height="28" fill="none" stroke="#15803d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            </div>
+            <h3 style="font-size:18px;font-weight:700;color:#0b044d;margin-bottom:6px;">DTR Downloaded!</h3>
+            <p style="font-size:13px;color:#6b6a8a;margin-bottom:20px;">Your Daily Time Record has been successfully downloaded as a PDF file.</p>
+            <div style="text-align:left;background:#f7f6ff;border-radius:12px;padding:14px 16px;">
+                <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f0effe;font-size:13px;"><span style="color:#6b6a8a;font-weight:600;">Employee</span><strong style="color:#0b044d;">Juan D. Cruz</strong></div>
+                <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f0effe;font-size:13px;"><span style="color:#6b6a8a;font-weight:600;">Period</span><strong style="color:#0b044d;">June 2025</strong></div>
+                <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f0effe;font-size:13px;"><span style="color:#6b6a8a;font-weight:600;">Format</span><strong style="color:#0b044d;">PDF Document</strong></div>
+                <div style="display:flex;justify-content:space-between;padding:7px 0;font-size:13px;"><span style="color:#6b6a8a;font-weight:600;">Downloaded</span><strong id="dtrDownloadTime" style="color:#0b044d;">&mdash;</strong></div>
+            </div>
+        </div>
+        <div style="display:flex;gap:10px;padding:0 24px 24px;">
+            <button class="modal-btn-ghost" style="flex:1;justify-content:center;" onclick="closeModal('dtrDownloadModal')">Close</button>
+            <button class="modal-btn-primary" style="flex:1;justify-content:center;" onclick="closeModal('dtrDownloadModal')">
+                <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                Done
+            </button>
+        </div>
+    </div>
+</div>
+
+<style> top:0; left:0; right:0; bottom:0; background:rgba(11,4,77,0.6); backdrop-filter:blur(4px); display:flex; align-items:center; justify-content:center; z-index:1000; padding:20px; }
 .modal-box { background:#fff; border-radius:16px; width:100%; max-width:480px; box-shadow:0 25px 50px -12px rgba(0,0,0,0.25); animation:slideUp 0.3s ease; }
 @keyframes slideUp { from { transform:translateY(20px); opacity:0; } to { transform:translateY(0); opacity:1; } }
 .modal-header { display:flex; justify-content:space-between; align-items:flex-start; padding:24px 24px 0; }
@@ -329,6 +354,14 @@
             sidebar.classList.remove('mobile-open');
             overlay.classList.remove('active');
         });
+    }
+
+    function downloadDTR() {
+        const now = new Date().toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit', hour12: true }) +
+                    ', ' + new Date().toLocaleDateString('en-PH', { month: 'short', day: 'numeric', year: 'numeric' });
+        document.getElementById('dtrDownloadTime').textContent = now;
+        closeModal('dtrModal');
+        document.getElementById('dtrDownloadModal').style.display = 'flex';
     }
 
     function showDTRModal() {

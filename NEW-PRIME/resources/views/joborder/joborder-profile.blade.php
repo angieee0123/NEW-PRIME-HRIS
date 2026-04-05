@@ -363,15 +363,53 @@
     }
 
     function saveProfile() {
-        alert('Profile updated successfully!');
+        const now = new Date().toLocaleTimeString('en-PH', { hour:'2-digit', minute:'2-digit', hour12:true }) +
+                    ', ' + new Date().toLocaleDateString('en-PH', { month:'short', day:'numeric', year:'numeric' });
+        document.querySelector('#tab-personal .profile-field:nth-child(4) strong').textContent = document.getElementById('contact').value;
+        document.querySelector('#tab-personal .profile-field:nth-child(5) strong').textContent = document.getElementById('email').value;
+        document.querySelector('#tab-personal .profile-field:nth-child(6) strong').textContent = document.getElementById('address').value;
+        document.querySelector('#tab-emergency .profile-field:nth-child(1) strong').textContent = document.getElementById('emergencyContact').value;
+        document.querySelector('#tab-emergency .profile-field:nth-child(2) strong').textContent = document.getElementById('emergencyRelation').value;
+        document.querySelector('#tab-emergency .profile-field:nth-child(3) strong').textContent = document.getElementById('emergencyPhone').value;
+        document.getElementById('profileSaveTime').textContent = now;
         closeEditModal();
+        document.getElementById('profileSaveModal').style.display = 'flex';
+    }
+
+    function closeProfileSaveModal() {
+        document.getElementById('profileSaveModal').style.display = 'none';
     }
 
     document.addEventListener('keydown', e => {
-        if (e.key === 'Escape') closeEditModal();
+        if (e.key === 'Escape') { closeEditModal(); closeProfileSaveModal(); }
     });
 </script>
 
 @include('joborder.joborder-chatbot')
+
+{{-- Save Success Modal --}}
+<div id="profileSaveModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(11,4,77,0.55);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:1000;padding:20px;" onclick="closeProfileSaveModal()">
+    <div style="background:#fff;border-radius:16px;width:100%;max-width:400px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);animation:psUp 0.25s ease;" onclick="event.stopPropagation()">
+        <div style="text-align:center;padding:32px 24px 20px;">
+            <div style="width:56px;height:56px;border-radius:50%;background:#e8f9ef;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+                <svg width="28" height="28" fill="none" stroke="#15803d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <h3 style="font-size:18px;font-weight:700;color:#0b044d;margin-bottom:6px;">Profile Updated!</h3>
+            <p style="font-size:13px;color:#6b6a8a;margin-bottom:20px;">Your profile information has been saved successfully.</p>
+            <div style="text-align:left;background:#f7f6ff;border-radius:12px;padding:14px 16px;">
+                <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f0effe;font-size:13px;"><span style="color:#6b6a8a;font-weight:600;">Updated by</span><strong style="color:#0b044d;">Juan D. Cruz</strong></div>
+                <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f0effe;font-size:13px;"><span style="color:#6b6a8a;font-weight:600;">Section</span><strong style="color:#0b044d;">Contact &amp; Emergency</strong></div>
+                <div style="display:flex;justify-content:space-between;padding:7px 0;font-size:13px;"><span style="color:#6b6a8a;font-weight:600;">Saved at</span><strong id="profileSaveTime" style="color:#0b044d;"></strong></div>
+            </div>
+        </div>
+        <div style="padding:0 24px 24px;">
+            <button onclick="closeProfileSaveModal()" style="width:100%;padding:10px 20px;border-radius:9px;border:none;background:#15803d;font-size:13px;font-weight:600;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Poppins',sans-serif;">
+                <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                Done
+            </button>
+        </div>
+    </div>
+</div>
+<style>@keyframes psUp{from{transform:translateY(16px);opacity:0}to{transform:translateY(0);opacity:1}}</style>
 
 @endsection

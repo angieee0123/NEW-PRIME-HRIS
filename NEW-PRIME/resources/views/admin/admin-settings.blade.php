@@ -422,8 +422,8 @@
                 </div>
                 <div class="settings-form-wrapper">
                     <div class="settings-save-bar">
-                        <button class="settings-btn-reset">Reset</button>
-                        <button class="settings-btn-save">
+                        <button class="settings-btn-reset" onclick="resetNotificationsForm()">Reset</button>
+                        <button class="settings-btn-save" onclick="saveSettings('notifications')">
                             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
                             Save Changes
                         </button>
@@ -492,81 +492,54 @@
 </div>
 
 <script>
-let currentTab = 'profile';
-
 function setSettingsTab(tab) {
-    currentTab = tab;
     document.querySelectorAll('.settings-nav-item').forEach(item => item.classList.remove('active'));
     event.target.closest('.settings-nav-item').classList.add('active');
-    
     ['profile', 'system', 'security', 'notifications', 'requests'].forEach(t => {
         document.getElementById(t + 'Tab').style.display = t === tab ? 'block' : 'none';
     });
 }
 
-function toggleNotification(btn) {
-    btn.classList.toggle('active');
+function toggleNotification(btn) { btn.classList.toggle('active'); }
+function toggleTwoFA() { document.getElementById('twoFAToggle').classList.toggle('active'); }
+
+function showSettingsModal(section, isSuccess, title, msg) {
+    const colors = { success: { bg: '#e8f9ef', stroke: '#15803d', btn: '#15803d' }, error: { bg: '#fdf0ef', stroke: '#8e1e18', btn: '#8e1e18' } };
+    const c = colors[isSuccess ? 'success' : 'error'];
+    const now = new Date().toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit', hour12: true }) + ', ' +
+                new Date().toLocaleDateString('en-PH', { month: 'short', day: 'numeric', year: 'numeric' });
+    document.getElementById('smIcon').style.background = c.bg;
+    document.getElementById('smIcon').innerHTML = isSuccess
+        ? '<svg width="28" height="28" fill="none" stroke="' + c.stroke + '" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>'
+        : '<svg width="28" height="28" fill="none" stroke="' + c.stroke + '" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+    document.getElementById('smTitle').textContent = title;
+    document.getElementById('smMsg').textContent = msg;
+    document.getElementById('smSection').textContent = section;
+    document.getElementById('smTime').textContent = now;
+    document.getElementById('smBtn').style.background = c.btn;
+    const modal = document.getElementById('settingsModal');
+    modal.style.display = 'flex';
 }
 
-function toggleTwoFA() {
-    document.getElementById('twoFAToggle').classList.toggle('active');
+function closeSettingsModal() {
+    document.getElementById('settingsModal').style.display = 'none';
 }
 
-function changePassword() {
-    const current = document.getElementById('currentPw').value;
-    const newPw = document.getElementById('newPw').value;
-    const confirm = document.getElementById('confirmPw').value;
-    const msg = document.getElementById('pwMessage');
-    
-    if (!current || !newPw || !confirm) {
-        msg.style.display = 'block';
-        msg.className = 'settings-message error';
-        msg.textContent = 'Please fill in all fields.';
-        return;
-    }
-    if (newPw !== confirm) {
-        msg.style.display = 'block';
-        msg.className = 'settings-message error';
-        msg.textContent = 'New passwords do not match.';
-        return;
-    }
-    if (newPw.length < 8) {
-        msg.style.display = 'block';
-        msg.className = 'settings-message error';
-        msg.textContent = 'Password must be at least 8 characters.';
-        return;
-    }
-    msg.style.display = 'block';
-    msg.className = 'settings-message success';
-    msg.textContent = '✓ Password changed successfully.';
-    document.getElementById('currentPw').value = '';
-    document.getElementById('newPw').value = '';
-    document.getElementById('confirmPw').value = '';
-    setTimeout(() => msg.style.display = 'none', 3000);
+function saveSettings(section) {
+    const labels = { profile: 'Account Information', system: 'System Settings', notifications: 'Notification Preferences' };
+    showSettingsModal(labels[section] || section, true, 'Settings Saved!', 'Your ' + (labels[section] || section).toLowerCase() + ' have been saved successfully.');
 }
 
 function saveProfile() {
-    const btn = event.target;
-    btn.classList.add('saved');
-    btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Saved!';
-    setTimeout(() => {
-        btn.classList.remove('saved');
-        btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Save Changes';
-    }, 2000);
-}
-
-function resetProfileForm() {
-    document.querySelectorAll('#profileTab input').forEach(input => input.value = input.defaultValue);
+    saveSettings('profile');
 }
 
 function saveSystem() {
-    const btn = event.target.closest('.settings-btn-save');
-    btn.classList.add('saved');
-    btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Saved!';
-    setTimeout(() => {
-        btn.classList.remove('saved');
-        btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Save Changes';
-    }, 2000);
+    saveSettings('system');
+}
+
+function resetProfileForm() {
+    document.querySelectorAll('#profileTab input').forEach(input => { input.value = input.defaultValue; });
 }
 
 function resetSystemForm() {
@@ -576,17 +549,82 @@ function resetSystemForm() {
     document.getElementById('dateFormat').value = 'MM/DD/YYYY';
 }
 
+function resetNotificationsForm() {
+    document.querySelectorAll('#notificationsTab .settings-toggle').forEach((t, i) => {
+        if (i < 4) t.classList.add('active'); else t.classList.remove('active');
+    });
+}
+
+function changePassword() {
+    const current = document.getElementById('currentPw').value;
+    const newPw   = document.getElementById('newPw').value;
+    const confirm = document.getElementById('confirmPw').value;
+    const msg     = document.getElementById('pwMessage');
+
+    if (!current || !newPw || !confirm) {
+        msg.style.display = 'block';
+        msg.className = 'settings-message error';
+        msg.textContent = 'Please fill in all password fields.';
+        return;
+    }
+    if (newPw.length < 8) {
+        msg.style.display = 'block';
+        msg.className = 'settings-message error';
+        msg.textContent = 'New password must be at least 8 characters.';
+        return;
+    }
+    if (newPw !== confirm) {
+        msg.style.display = 'block';
+        msg.className = 'settings-message error';
+        msg.textContent = 'New password and confirmation do not match.';
+        return;
+    }
+    msg.style.display = 'none';
+    document.getElementById('currentPw').value = '';
+    document.getElementById('newPw').value = '';
+    document.getElementById('confirmPw').value = '';
+    showSettingsModal('Password', true, 'Password Changed!', 'Your password has been updated successfully.');
+}
+
 function approveRequest(id) {
-    alert('Request ' + id + ' approved!');
+    const card = document.querySelector('[onclick="approveRequest(\'' + id + '\''  + ')"]').closest('.request-card');
+    card.querySelector('.request-actions').innerHTML = '<span class="request-status approved">Approved</span>';
+    showSettingsModal('Account Requests', true, 'Request Approved!', 'The account request has been approved successfully.');
 }
 
 function rejectRequest(id) {
-    alert('Request ' + id + ' rejected!');
+    const card = document.querySelector('[onclick="rejectRequest(\'' + id + '\''  + ')"]').closest('.request-card');
+    card.querySelector('.request-actions').innerHTML = '<span class="request-status rejected">Rejected</span>';
+    showSettingsModal('Account Requests', false, 'Request Rejected', 'The account request has been rejected.');
 }
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSettingsModal(); });
 </script>
     </main>
 
     @include('admin.admin-chatbot')
+
+{{-- Settings Success Modal --}}
+<div id="settingsModal" onclick="closeSettingsModal()" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(11,4,77,0.55);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:1000;padding:20px;">
+    <div onclick="event.stopPropagation()" style="background:#fff;border-radius:16px;width:100%;max-width:400px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);animation:smUp 0.25s ease;">
+        <div style="text-align:center;padding:32px 24px 20px;">
+            <div id="smIcon" style="width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;"></div>
+            <h3 id="smTitle" style="font-size:18px;font-weight:700;color:#0b044d;margin-bottom:6px;"></h3>
+            <p id="smMsg" style="font-size:13px;color:#6b6a8a;margin-bottom:20px;"></p>
+            <div style="text-align:left;background:#f7f6ff;border-radius:12px;padding:14px 16px;">
+                <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f0effe;font-size:13px;"><span style="color:#6b6a8a;font-weight:600;">Section</span><strong id="smSection" style="color:#0b044d;"></strong></div>
+                <div style="display:flex;justify-content:space-between;padding:7px 0;font-size:13px;"><span style="color:#6b6a8a;font-weight:600;">Saved at</span><strong id="smTime" style="color:#0b044d;"></strong></div>
+            </div>
+        </div>
+        <div style="padding:0 24px 24px;">
+            <button onclick="closeSettingsModal()" id="smBtn" style="width:100%;padding:10px 20px;border-radius:9px;border:none;font-size:13px;font-weight:600;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Poppins',sans-serif;">
+                <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                Done
+            </button>
+        </div>
+    </div>
+</div>
+<style>@keyframes smUp{from{transform:translateY(16px);opacity:0}to{transform:translateY(0);opacity:1}}</style>
 
 </div>
 

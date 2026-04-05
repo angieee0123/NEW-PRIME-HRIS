@@ -417,7 +417,7 @@
                             <td>
                                 <div class="row-actions">
                                     <button class="btn-view" onclick="openEvaluation('EVAL-2025-01', 'Apr-Jun 2025', 4.5, 'Jun 28, 2025', 'General Services Head', 'Good performance and dedication to assigned tasks.', ['Reliability', 'Teamwork', 'Punctuality'], ['Technical Skills'])">View</button>
-                                    <button class="btn-edit">Download</button>
+                                    <button class="btn-edit" onclick="downloadReportDirect('EVAL-2025-01', 'Apr-Jun 2025')">Download</button>
                                 </div>
                             </td>
                         </tr>
@@ -436,7 +436,7 @@
                             <td>
                                 <div class="row-actions">
                                     <button class="btn-view" onclick="openEvaluation('EVAL-2025-02', 'Jan-Mar 2025', 4.3, 'Mar 30, 2025', 'General Services Head', 'Consistent performance with good work ethic.', ['Reliability', 'Punctuality'], ['Communication'])">View</button>
-                                    <button class="btn-edit">Download</button>
+                                    <button class="btn-edit" onclick="downloadReportDirect('EVAL-2025-02', 'Jan-Mar 2025')">Download</button>
                                 </div>
                             </td>
                         </tr>
@@ -453,6 +453,32 @@
 </div>
 
 @include('joborder.joborder-chatbot')
+
+{{-- Download Report Success Modal --}}
+<div class="modal-overlay" id="downloadModal">
+    <div class="modal-box" style="max-width:400px;">
+        <div class="modal-body" style="text-align:center;padding:32px 24px 20px;">
+            <div style="width:56px;height:56px;border-radius:50%;background:#e8f9ef;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+                <svg width="28" height="28" fill="none" stroke="#15803d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            </div>
+            <h3 style="font-size:18px;font-weight:700;color:#0b044d;margin-bottom:6px;">Report Downloaded!</h3>
+            <p style="font-size:13px;color:#6b6a8a;margin-bottom:20px;">Your performance evaluation report has been successfully downloaded as a PDF file.</p>
+            <div style="text-align:left;background:#f7f6ff;border-radius:12px;padding:14px 16px;">
+                <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f0effe;font-size:13px;"><span style="color:#6b6a8a;font-weight:600;">Evaluation ID</span><strong id="dlEvalId" style="color:#0b044d;"></strong></div>
+                <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f0effe;font-size:13px;"><span style="color:#6b6a8a;font-weight:600;">Period</span><strong id="dlPeriod" style="color:#0b044d;"></strong></div>
+                <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f0effe;font-size:13px;"><span style="color:#6b6a8a;font-weight:600;">Format</span><strong style="color:#0b044d;">PDF Document</strong></div>
+                <div style="display:flex;justify-content:space-between;padding:7px 0;font-size:13px;"><span style="color:#6b6a8a;font-weight:600;">Downloaded</span><strong id="dlTime" style="color:#0b044d;"></strong></div>
+            </div>
+        </div>
+        <div style="display:flex;gap:10px;padding:0 24px 24px;">
+            <button class="modal-btn-ghost" style="flex:1;justify-content:center;" onclick="closeDownloadModal()">Close</button>
+            <button class="modal-btn-primary" style="flex:1;justify-content:center;" onclick="closeDownloadModal()">
+                <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                Done
+            </button>
+        </div>
+    </div>
+</div>
 
 {{-- Evaluation Modal --}}
 <div class="modal-overlay" id="evalModal">
@@ -475,7 +501,7 @@
         <div class="modal-body" id="evalBody"></div>
         <div class="modal-footer">
             <button class="modal-btn-ghost" onclick="closeModal()">Close</button>
-            <button class="modal-btn-primary">
+            <button class="modal-btn-primary" onclick="downloadReport()">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                 Download Report
             </button>
@@ -541,7 +567,34 @@
         });
     }
 
+    let _currentEvalId = '';
+    let _currentPeriod  = '';
+
+    function showDownloadModal(evalId, period) {
+        const now = new Date().toLocaleTimeString('en-PH', { hour:'2-digit', minute:'2-digit', hour12:true }) +
+                    ', ' + new Date().toLocaleDateString('en-PH', { month:'short', day:'numeric', year:'numeric' });
+        document.getElementById('dlEvalId').textContent = evalId;
+        document.getElementById('dlPeriod').textContent = period;
+        document.getElementById('dlTime').textContent   = now;
+        document.getElementById('downloadModal').classList.add('show');
+    }
+
+    function closeDownloadModal() {
+        document.getElementById('downloadModal').classList.remove('show');
+    }
+
+    function downloadReport() {
+        closeModal();
+        showDownloadModal(_currentEvalId, _currentPeriod);
+    }
+
+    function downloadReportDirect(evalId, period) {
+        showDownloadModal(evalId, period);
+    }
+
     function openEvaluation(id, period, rating, completedDate, evaluator, feedback, strengths, improvements) {
+        _currentEvalId = id;
+        _currentPeriod = period;
         const ratingColor = rating >= 4.5 ? '#15803d' : rating >= 4.0 ? '#d9bb00' : '#8e1e18';
         document.getElementById('evalId').textContent = 'PERFORMANCE EVALUATION · ' + id;
         document.getElementById('evalSub').textContent = period + ' · Completed on ' + completedDate;
@@ -571,7 +624,7 @@
     }
 
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') { closeModal(); closeGoalModal(); }
+        if (e.key === 'Escape') { closeModal(); closeGoalModal(); closeDownloadModal(); }
     });
 </script>
 

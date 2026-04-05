@@ -418,14 +418,37 @@
         document.getElementById('contact').value = '09171234567';
     }
 
+    function resetNotifs() {
+        document.querySelectorAll('#tab-notifications .settings-toggle').forEach((t, i) => {
+            t.classList.toggle('active', i !== 3);
+        });
+    }
+
+    function showSaveModal(section, isSuccess, title, msg) {
+        const color = isSuccess ? '#15803d' : '#8e1e18';
+        const bg    = isSuccess ? '#e8f9ef'  : '#fdf0ef';
+        const icon  = isSuccess
+            ? '<svg width="28" height="28" fill="none" stroke="#15803d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>'
+            : '<svg width="28" height="28" fill="none" stroke="#8e1e18" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+        const now = new Date().toLocaleTimeString('en-PH', { hour:'2-digit', minute:'2-digit', hour12:true }) +
+                    ', ' + new Date().toLocaleDateString('en-PH', { month:'short', day:'numeric', year:'numeric' });
+        document.getElementById('smIcon').style.background = bg;
+        document.getElementById('smIcon').innerHTML = icon;
+        document.getElementById('smTitle').textContent   = title;
+        document.getElementById('smMsg').textContent     = msg;
+        document.getElementById('smSection').textContent = section;
+        document.getElementById('smTime').textContent    = now;
+        document.getElementById('smBtn').style.background = color;
+        const modal = document.getElementById('saveModal');
+        modal.style.display = 'flex';
+    }
+
+    function closeSaveModal() {
+        document.getElementById('saveModal').style.display = 'none';
+    }
+
     function saveProfile() {
-        const btn = document.querySelector('#tab-profile .settings-btn-save');
-        btn.textContent = '✓ Saved!';
-        btn.classList.add('saved');
-        setTimeout(() => {
-            btn.textContent = 'Save Changes';
-            btn.classList.remove('saved');
-        }, 2000);
+        showSaveModal('Personal Information', true, 'Settings Saved!', 'Your personal information has been saved successfully.');
     }
 
     function changePassword() {
@@ -435,13 +458,7 @@
         const msg     = document.getElementById('pwMsg');
 
         if (!current || !newPw || !confirm) {
-            msg.textContent = 'Please fill in all fields.';
-            msg.className = 'settings-message error';
-            msg.classList.remove('hidden');
-            return;
-        }
-        if (newPw !== confirm) {
-            msg.textContent = 'New passwords do not match.';
+            msg.textContent = 'Please fill in all password fields.';
             msg.className = 'settings-message error';
             msg.classList.remove('hidden');
             return;
@@ -452,32 +469,48 @@
             msg.classList.remove('hidden');
             return;
         }
-        msg.textContent = '✓ Password changed successfully.';
-        msg.className = 'settings-message success';
-        msg.classList.remove('hidden');
+        if (newPw !== confirm) {
+            msg.textContent = 'New passwords do not match.';
+            msg.className = 'settings-message error';
+            msg.classList.remove('hidden');
+            return;
+        }
+        msg.classList.add('hidden');
         document.getElementById('currentPw').value = '';
         document.getElementById('newPw').value = '';
         document.getElementById('confirmPw').value = '';
-        setTimeout(() => msg.classList.add('hidden'), 3000);
-    }
-
-    function resetNotifs() {
-        document.querySelectorAll('#tab-notifications .settings-toggle').forEach((t, i) => {
-            t.classList.toggle('active', i !== 3);
-        });
+        showSaveModal('Password', true, 'Password Changed!', 'Your password has been updated successfully.');
     }
 
     function saveNotifs() {
-        const btn = document.querySelector('#tab-notifications .settings-btn-save');
-        btn.textContent = '✓ Saved!';
-        btn.classList.add('saved');
-        setTimeout(() => {
-            btn.textContent = 'Save Changes';
-            btn.classList.remove('saved');
-        }, 2000);
+        showSaveModal('Notification Preferences', true, 'Settings Saved!', 'Your notification preferences have been saved successfully.');
     }
+
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSaveModal(); });
 </script>
 
 @include('joborder.joborder-chatbot')
+
+{{-- Save Success Modal --}}
+<div id="saveModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(11,4,77,0.55);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:1000;padding:20px;" onclick="closeSaveModal()">
+    <div style="background:#fff;border-radius:16px;width:100%;max-width:400px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);animation:smUp 0.25s ease;" onclick="event.stopPropagation()">
+        <div style="text-align:center;padding:32px 24px 20px;">
+            <div id="smIcon" style="width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;"></div>
+            <h3 id="smTitle" style="font-size:18px;font-weight:700;color:#0b044d;margin-bottom:6px;"></h3>
+            <p id="smMsg" style="font-size:13px;color:#6b6a8a;margin-bottom:20px;"></p>
+            <div style="text-align:left;background:#f7f6ff;border-radius:12px;padding:14px 16px;">
+                <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f0effe;font-size:13px;"><span style="color:#6b6a8a;font-weight:600;">Section</span><strong id="smSection" style="color:#0b044d;"></strong></div>
+                <div style="display:flex;justify-content:space-between;padding:7px 0;font-size:13px;"><span style="color:#6b6a8a;font-weight:600;">Saved at</span><strong id="smTime" style="color:#0b044d;"></strong></div>
+            </div>
+        </div>
+        <div style="padding:0 24px 24px;">
+            <button id="smBtn" onclick="closeSaveModal()" style="width:100%;padding:10px 20px;border-radius:9px;border:none;font-size:13px;font-weight:600;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Poppins',sans-serif;">
+                <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                Done
+            </button>
+        </div>
+    </div>
+</div>
+<style>@keyframes smUp{from{transform:translateY(16px);opacity:0}to{transform:translateY(0);opacity:1}}</style>
 
 @endsection

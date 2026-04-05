@@ -460,26 +460,58 @@
     });
 </script>
 
-<div class="modal-overlay" id="payslipModal" style="display: none;">
+<style>
+.modal-overlay { position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(11,4,77,0.55);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:1000;opacity:0;visibility:hidden;transition:all 0.2s;padding:20px; }
+.modal-overlay.show { opacity:1;visibility:visible; }
+.modal-box { background:#fff;border-radius:16px;width:100%;max-width:480px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);transform:translateY(16px);transition:transform 0.2s;max-height:90vh;overflow:hidden;display:flex;flex-direction:column; }
+.modal-overlay.show .modal-box { transform:translateY(0); }
+.modal-box.modal-sm { max-width:400px; }
+.modal-header { display:flex;justify-content:space-between;align-items:flex-start;padding:24px 24px 0;flex-shrink:0; }
+.pmodal-hero { display:flex;gap:14px;align-items:center; }
+.pmodal-hero-icon { width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+.modal-eyebrow { font-size:10.5px;color:#9999bb;font-weight:700;letter-spacing:1px;display:block; }
+.modal-title { font-size:18px;font-weight:700;color:#0b044d;margin:4px 0 2px; }
+.modal-sub { font-size:13px;color:#6b6a8a;margin:0; }
+.modal-close { background:none;border:none;cursor:pointer;padding:4px;color:#9999bb;flex-shrink:0; }
+.modal-close:hover { color:#0b044d; }
+.modal-body { padding:20px 24px;overflow-y:auto; }
+.modal-section-label { font-size:10.5px;font-weight:700;color:#9999bb;letter-spacing:1px;margin-bottom:8px;display:block; }
+.modal-row { display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f4f3ff;font-size:13px; }
+.modal-row span:first-child { color:#6b6a8a; }
+.modal-row strong { color:#0b044d;font-weight:600; }
+.modal-row.total { border-top:1.5px solid #e5e4f0;border-bottom:none;margin-top:4px; }
+.modal-row.total span { font-weight:700;color:#0b044d; }
+.modal-deduct { color:#8e1e18;font-weight:600; }
+.modal-net-row { display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:#f0fdf4;border-radius:10px;margin-top:14px;border:1.5px solid #bbf7d0; }
+.modal-net-row span { font-size:11px;font-weight:700;color:#15803d;letter-spacing:1px; }
+.modal-net-row strong { font-size:20px;font-weight:800;color:#15803d; }
+.modal-footer { display:flex;justify-content:flex-end;gap:10px;padding:16px 24px 24px;border-top:1px solid #e5e4f0;flex-shrink:0; }
+.modal-btn-ghost { padding:9px 18px;border-radius:9px;border:1.5px solid #dddcf0;background:#fff;font-size:13px;font-weight:600;color:#6b6a8a;cursor:pointer; }
+.modal-btn-ghost:hover { border-color:#0b044d;color:#0b044d; }
+.modal-btn-primary { padding:9px 18px;border-radius:9px;border:none;background:linear-gradient(135deg,#0b044d,#1a0f6e);color:#fff;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px; }
+.pmodal-badges { display:flex;gap:6px;margin-top:8px; }
+</style>
+
+<div class="modal-overlay" id="payslipModal" onclick="closeModal('payslipModal')">
     <div class="modal-box" onclick="event.stopPropagation()">
         <div class="modal-header">
-            <div>
-                <span class="modal-eyebrow">PAYSLIP · JUNE 16-30, 2025</span>
-                <h3 class="modal-title" id="payslipName">Maria B. Santos</h3>
-                <p class="modal-sub" id="payslipDetails">Administrative Officer IV · Office of the Mayor</p>
+            <div class="pmodal-hero">
+                <div class="pmodal-hero-icon" id="payslipAvatar" style="background:linear-gradient(135deg,#0b044d,#1a0f6e);font-size:15px;font-weight:800;color:#fff;">MB</div>
+                <div>
+                    <span class="modal-eyebrow">PAYSLIP · JUNE 16-30, 2025</span>
+                    <h3 class="modal-title" id="payslipName">Maria B. Santos</h3>
+                    <p class="modal-sub" id="payslipDetails">Administrative Officer IV · Office of the Mayor</p>
+                    <div class="pmodal-badges">
+                        <span class="badge-status" id="payslipStatus">Processed</span>
+                        <span class="badge-status on-hold" id="payslipId">PGS-0041</span>
+                    </div>
+                </div>
             </div>
             <button class="modal-close" onclick="closeModal('payslipModal')">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
             </button>
         </div>
         <div class="modal-body">
-            <div class="modal-emp-row">
-                <div class="emp-avatar lg" style="background: #0b044d;" id="payslipAvatar">MB</div>
-                <div>
-                    <p class="modal-emp-id" id="payslipId">PGS-0041</p>
-                    <span class="badge-status processed" id="payslipStatus">Processed</span>
-                </div>
-            </div>
             <div class="modal-section-label">PAY PERIOD</div>
             <div class="modal-row"><span>Period</span><strong>June 16-30, 2025</strong></div>
             <div class="modal-row"><span>Pay Date</span><strong>Jun 30, 2025</strong></div>
@@ -506,7 +538,7 @@
     </div>
 </div>
 
-<div class="modal-overlay" id="runPayrollModal" style="display: none;">
+<div class="modal-overlay" id="runPayrollModal" onclick="closeModal('runPayrollModal')">
     <div class="modal-box modal-sm" onclick="event.stopPropagation()">
         <div class="modal-header">
             <div>
@@ -533,28 +565,28 @@
     </div>
 </div>
 
-<div class="modal-overlay" id="successModal" style="display: none;">
+<div class="modal-overlay" id="successModal" onclick="closeModal('successModal')">
     <div class="modal-box modal-sm" onclick="event.stopPropagation()">
-        <div style="width: 56px; height: 56px; border-radius: 50%; background: #15803d18; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-        </div>
-        <div class="modal-body" style="text-align: center;">
-            <h3 class="modal-title" style="margin-bottom: 8px;">Payroll Processed!</h3>
-            <p style="font-size: 13.5px; color: #6b6a8a; margin-bottom: 16px;">June 16-30, 2025 payroll for <strong>8 employees</strong> has been successfully processed.</p>
-            <div class="modal-confirm-info" style="text-align: left;">
+        <div class="modal-body" style="text-align:center;padding-top:28px;">
+            <div style="width:56px;height:56px;border-radius:50%;background:#15803d18;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <h3 class="modal-title" style="margin-bottom:8px;">Payroll Processed!</h3>
+            <p style="font-size:13.5px;color:#6b6a8a;margin-bottom:16px;">June 16-30, 2025 payroll for <strong>8 employees</strong> has been successfully processed.</p>
+            <div style="text-align:left;">
                 <div class="modal-row"><span>Reference No.</span><strong>PAY-2025-06-002</strong></div>
                 <div class="modal-row"><span>Pay Date</span><strong>Jun 30, 2025</strong></div>
                 <div class="modal-row"><span>Processed by</span><strong>Admin User</strong></div>
-                <div class="modal-row"><span>Date & Time</span><strong>Jun 25, 2025 · 10:42 AM</strong></div>
+                <div class="modal-row"><span>Date &amp; Time</span><strong>Jun 25, 2025 · 10:42 AM</strong></div>
             </div>
         </div>
-        <div class="modal-footer">
-            <button class="modal-btn-primary" style="width: 100%; justify-content: center;" onclick="closeModal('successModal')">Done</button>
+        <div class="modal-footer" style="justify-content:center;">
+            <button class="modal-btn-primary" style="width:100%;justify-content:center;" onclick="closeModal('successModal')">Done</button>
         </div>
     </div>
 </div>
 
-<div class="modal-overlay" id="editPayrollModal" style="display: none;">
+<div class="modal-overlay" id="editPayrollModal" onclick="closeModal('editPayrollModal')">
     <div class="modal-box" onclick="event.stopPropagation()">
         <div class="modal-header">
             <div>
@@ -621,20 +653,22 @@ const payrollData = [
 
 const peso = n => '₱' + Number(n).toLocaleString('en-PH', { minimumFractionDigits: 2 });
 
-function showModal(id) { document.getElementById(id).style.display = 'flex'; }
-function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+function showModal(id) { document.getElementById(id).classList.add('show'); }
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
 
 function showPayslip(id) {
     const emp = payrollData.find(e => e.id === id);
     if (!emp) return;
     const deductions = emp.gsis + emp.philhealth + emp.pagibig + emp.tax;
     const net = emp.basic - deductions;
+    const statusClass = emp.status === 'Processed' ? 'processed' : emp.status === 'Pending' ? 'pending' : 'on-hold';
     document.getElementById('payslipName').textContent = emp.name;
     document.getElementById('payslipDetails').textContent = emp.position + ' · ' + emp.dept;
-    document.getElementById('payslipAvatar').textContent = emp.initials;
-    document.getElementById('payslipAvatar').style.background = emp.color;
+    const avatar = document.getElementById('payslipAvatar');
+    avatar.textContent = emp.initials;
+    avatar.style.background = 'linear-gradient(135deg,' + emp.color + ',' + emp.color + 'cc)';
     document.getElementById('payslipId').textContent = emp.id;
-    document.getElementById('payslipStatus').className = 'badge-status ' + emp.status.toLowerCase().replace(' ', '-');
+    document.getElementById('payslipStatus').className = 'badge-status ' + statusClass;
     document.getElementById('payslipStatus').textContent = emp.status;
     document.getElementById('payslipBasic').textContent = peso(emp.basic);
     document.getElementById('payslipGsis').textContent = peso(emp.gsis);
@@ -728,10 +762,6 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
-document.querySelectorAll('.modal-overlay').forEach(modal => {
-    modal.addEventListener('click', function(e) {
-        if (e.target === modal) { modal.style.display = 'none'; }
-    });
-});
+
 </script>
 @endsection
