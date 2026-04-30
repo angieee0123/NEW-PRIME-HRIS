@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Leave & Benefits | Municipal Government of Pagsanjan')
+@section('title', 'Leave & Benefits · PRIME HRIS')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/admin.css') }}">

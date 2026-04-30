@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Admin Dashboard · PRIME HRIS')
+@section('title', 'Dashboard · PRIME HRIS')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/admin.css') }}">

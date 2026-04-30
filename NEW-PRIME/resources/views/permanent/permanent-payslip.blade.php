@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Payslip | PRIME HRIS - Permanent Employee')
+@section('title', 'Payslip · PRIME HRIS')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/admin.css') }}">

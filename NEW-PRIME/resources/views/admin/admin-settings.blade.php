@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Settings | Municipal Government of Pagsanjan')
+@section('title', 'Settings · PRIME HRIS')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/admin.css') }}">

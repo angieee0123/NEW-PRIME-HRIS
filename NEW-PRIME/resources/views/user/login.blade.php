@@ -133,10 +133,7 @@
                 <p class="auth-note">
                     No account? Contact your <strong>System Administrator</strong> or the Human Resource Management Office.
                 </p>
-                <p class="auth-switch">
-                    Need to register?
-                    <a href="{{ route('signup') }}" class="auth-switch-btn">Create an account</a>
-                </p>
+
             </div>
         </div>
 
